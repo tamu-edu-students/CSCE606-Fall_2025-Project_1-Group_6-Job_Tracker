@@ -1,0 +1,13 @@
+<h2>Your Personal Information</h2>
+
+<ul>
+  <li><strong>Full Name:</strong> <%= @user.full_name %></li>
+  <li><strong>Email:</strong> <%= @user.email %></li>
+  <li><strong>Phone:</strong> <%= @user.phone %></li>
+</ul>
+
+<%= button_to "Back to Dashboard", dashboard_path, method: :get, class: "btn btn-secondary" %>
+<br>
+<%= button_to "Edit Profile", edit_user_registration_path, method: :get, class: "btn btn-primary" %>
+<br>
+<%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>

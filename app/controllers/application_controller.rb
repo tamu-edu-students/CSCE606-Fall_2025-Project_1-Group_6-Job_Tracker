@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
       :notification_pref, :profile_completed
     ])
   end
+
+  def after_sign_in_path_for(resource)
+    dashboard_path
+  end
+  
 end
