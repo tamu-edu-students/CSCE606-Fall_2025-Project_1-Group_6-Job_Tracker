@@ -7,43 +7,43 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <!-- Custom fields -->
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :full_name %><br />
     <%= f.text_field :full_name, autofocus: true %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :phone %><br />
     <%= f.telephone_field :phone %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :location %><br />
     <%= f.text_field :location %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :linkedin_url %><br />
     <%= f.url_field :linkedin_url %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :resume_url %><br />
     <%= f.url_field :resume_url %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :role %><br />
     <%= f.select :role, options_for_select([["Applicant","applicant"], ["Recruiter","recruiter"], ["Admin","admin"]], resource.role) %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :notification_pref, "Notification Preference" %><br />
     <%= f.select :notification_pref, options_for_select([["Email","email"], ["SMS","sms"], ["None","none"]], resource.notification_pref) %>
   </div>
 
   <!-- Default Devise fields -->
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autocomplete: "email" %>
   </div>
@@ -52,7 +52,7 @@
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
     <% if @minimum_password_length %>
@@ -61,12 +61,12 @@
     <% end %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
-  <div class="field">
+  <div class="field edit-field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
