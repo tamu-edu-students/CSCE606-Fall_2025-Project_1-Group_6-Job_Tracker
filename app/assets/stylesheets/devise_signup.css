@@ -67,3 +67,18 @@ body {
 .signup-footer a:hover {
   text-decoration: underline;
 }
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+.remember-checkbox {
+  width: 16px;
+  height: 16px;
+}
+.remember-label {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
+
