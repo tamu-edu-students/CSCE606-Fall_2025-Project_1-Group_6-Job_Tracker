@@ -20,8 +20,9 @@ This Markdown document describes the **monolithic architecture** and flow of the
             v                               v
 +----------------------+        +----------------------+
 |                      |        |                      |
-|    Models (ActiveRecord)       |  Background Jobs     |
-|    User, Job, Reminder, etc.  |  (Notifications, CSV)|
+| Models (ActiveRecord)|        |  Background Jobs     |
+|  User, Job, Reminder,|        |  (Notifications, CSV)|
+|    etc.              |        |                      |
 +----------------------+        +----------------------+
             |
             |
