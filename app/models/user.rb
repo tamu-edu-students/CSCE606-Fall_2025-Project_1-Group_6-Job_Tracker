@@ -13,4 +13,7 @@ class User < ApplicationRecord
             allow_blank: true
   validates :resume_url, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
             allow_blank: true
+
+  has_many :jobs, dependent: :destroy
+
 end
