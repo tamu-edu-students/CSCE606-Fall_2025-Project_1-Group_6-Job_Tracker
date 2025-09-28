@@ -4,18 +4,14 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [
-      :full_name, :phone, :location, :linkedin_url, :resume_url, :role,
-      :notification_pref, :profile_completed
-    ])
-    devise_parameter_sanitizer.permit(:account_update, keys: [
-      :full_name, :phone, :location, :linkedin_url, :resume_url, :role,
-      :notification_pref, :profile_completed
-    ])
+    # Permit only the necessary fields during sign up and account update
+    permitted_keys = [:full_name, :phone]
+
+    devise_parameter_sanitizer.permit(:sign_up, keys: permitted_keys)
+    devise_parameter_sanitizer.permit(:account_update, keys: permitted_keys)
   end
 
   def after_sign_in_path_for(resource)
     dashboard_path
   end
-  
 end
