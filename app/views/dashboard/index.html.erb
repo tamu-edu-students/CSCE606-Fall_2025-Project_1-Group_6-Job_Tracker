@@ -5,3 +5,6 @@
 <br><br>
 
 <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+
+<h2>My Job Applications</h2>
+<%= render partial: 'jobs/index', locals: { jobs: @jobs } %>
