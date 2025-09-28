@@ -20,6 +20,8 @@ class User < ApplicationRecord
   # Custom validation to ensure password confirmation matches password
   validate :passwords_match, if: -> { password.present? || password_confirmation.present? }
 
+  has_many :jobs, dependent: :destroy
+
   private
   def password_complexity
     return if password.blank?
