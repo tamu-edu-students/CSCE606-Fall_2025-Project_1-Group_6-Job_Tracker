@@ -1,6 +1,7 @@
-
 body {
-	font-family: Calibri, Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
+  background: #F9FAFB;
+  color: #2D3748;
 }
 
  .landing-container {
@@ -50,42 +51,159 @@ body {
 	box-sizing: border-box;
 }
 
-/* Navbar styles */
 .navbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 1rem 2rem;
-	background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #f8f9fa;
 	border-bottom: 1px solid #e5e5e5;
-	margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 .navbar-brand {
-	font-size: 1.5rem;
-	font-weight: bold;
-	color: #007bff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
 }
-.navbar-actions .btn {
-	margin-left: 1rem;
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
 }
 
-/* Footer styles */
+.btn.btn-primary {
+  background: #4A90E2;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.btn.btn-primary:hover {
+  background: #357ABD;
+}
+.logout-btn {
+  background: #E53E3E;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.logout-btn:hover {
+  background: #C53030;
+}
+
+.kanban-column {
+  min-height: 300px;
+  border: 1px solid #CBD5E0;
+  border-radius: 8px;
+  background: #fff;
+}
+.kanban-column h3 {
+  text-align: center;
+  background: #EDF2F7;
+  padding: 10px 0;
+  margin: 0;
+  border-bottom: 1px solid #E2E8F0;
+  color: #2D3748;
+}
+.kanban-card {
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+.kanban-card:hover {
+  transform: translateY(-3px);
+}
+.kanban-card h4 {
+  margin: 0 0 6px 0;
+  color: #4A90E2;
+}
+.kanban-card p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #718096;
+}
+.kanban-card.dragging {
+  opacity: 0.6;
+}
+.kanban-column.drag-over {
+  background: #E6FFFA;
+  border-color: #50E3C2;
+}
+
+.job-item {
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.job-item h3 {
+  margin: 0 0 8px 0;
+  color: #4A90E2;
+}
+.job-item p {	
+  margin: 4px 0;
+  color: #718096;
+}
+.job-item strong {
+  color: #2D3748;
+}
+
 .footer {
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	background: #f8f9fa;
-	border-top: 1px solid #e5e5e5;
-	text-align: center;
-	padding: 1rem 0;
-	font-size: 1rem;
-	color: #333;
-	z-index: 100;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #E2E8F0;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1 rem;
+  color: #718096;
+  z-index: 100;
 }
 .footer-content {
 	max-width: 1000px;
 	margin: 0 auto;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* app/assets/stylesheets/application.css */
+
+.info-container {
+  /* Center the container itself on the page */
+  margin: 4rem auto;
+  max-width: 500px; /* Prevents it from being too wide on large screens */
+}
+
+/* Styles the heading to look like the "Dashboard" heading */
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0d6efd; /* Bootstrap's primary blue */
+  margin-bottom: 1.5rem;
+}
+
+/* Adds space between the stacked buttons */
+.info-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* This creates the vertical space between buttons */
+  margin-top: 2rem;
 }
 
 @media (max-width: 700px) {
@@ -194,4 +312,3 @@ body {
 	color: #666;
 	margin-top: 4px;
 }
-

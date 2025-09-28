@@ -1,0 +1,12 @@
+<div class="jobs-list">
+  <% @jobs.each do |job| %>
+    <div class="job-card">
+      <h3><%= job.title %></h3>
+      <p><strong>Company:</strong> <%= job.company.name %></p>
+      <p><strong>Status:</strong> <%= job.status %></p>
+      <p><strong>Deadline:</strong> <%= job.deadline.present? ? job.deadline.strftime("%b %d, %Y") : "N/A" %></p>
+      <p><strong>Applied On:</strong> <%= job.created_at.strftime("%b %d, %Y") %></p>
+    </div>
+  <% end %>
+</div>
+
