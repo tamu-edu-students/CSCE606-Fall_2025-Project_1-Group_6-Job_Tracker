@@ -1,7 +1,63 @@
-<h1>Dashboard</h1>
+<h1 class="text-center fw-bold text-primary mb-4">Dashboard</h1>
 
-<%= button_to "Personal Info", personal_info_path, method: :get, class: "btn btn-primary" %>
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="row text-center fw-semibold">
+        <div class="col-md-3">
+          <h4>Applied</h4>
+          <% @jobs.select { |job| job.status == "applied" }.each do |job| %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5><%= job.title %></h5>
+                <p><strong>Company:</strong> <%= job.company.name %></p>
+              </div>
+            </div>
+            <!-- Add Job Button -->
+            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+          <% end %>
+        </div>
+        <div class="col-md-3">
+          <h4>Interview</h4>
+          <% @jobs.select { |job| job.status == "interview" }.each do |job| %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5><%= job.title %></h5>
+                <p><strong>Company:</strong> <%= job.company.name %></p>
+              </div>
+            </div>
+            <!-- Add Job Button -->
+            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+          <% end %>
+        </div>
+        <div class="col-md-3">
+          <h4>Offer</h4>
+          <% @jobs.select { |job| job.status == "offer" }.each do |job| %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5><%= job.title %></h5>
+                <p><strong>Company:</strong> <%= job.company.name %></p>
+              </div>
+            </div>
+            <!-- Add Job Button -->
+            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+          <% end %>
+        </div>
+        <div class="col-md-3">
+          <h4>Rejected</h4>
+          <% @jobs.select { |job| job.status == "rejected" }.each do |job| %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5><%= job.title %></h5>
+                <p><strong>Company:</strong> <%= job.company.name %></p>
+              </div>
+            </div>
+            <!-- Add Job Button -->
+            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<br><br>
-
-<%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
