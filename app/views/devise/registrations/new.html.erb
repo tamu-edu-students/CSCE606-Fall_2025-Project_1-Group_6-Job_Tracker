@@ -3,60 +3,46 @@
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "signup-form" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <!-- Full Name -->
     <div class="signup-field field">
       <%= f.label :full_name, class: "signup-label" %><br />
       <%= f.text_field :full_name, autofocus: true, class: "signup-input" %>
     </div>
 
+    <!-- Email -->
     <div class="signup-field field">
       <%= f.label :email, class: "signup-label" %><br />
       <%= f.email_field :email, autocomplete: "email", class: "signup-input" %>
+      <small class="hint">Enter a valid email like name@example.com</small>
     </div>
 
+    <!-- Phone -->
     <div class="signup-field field">
       <%= f.label :phone, class: "signup-label" %><br />
       <%= f.text_field :phone, class: "signup-input" %>
+      <small class="hint">Include country code if needed (e.g., +12345678901)</small>
     </div>
 
-    <div class="signup-field field">
-      <%= f.label :location, class: "signup-label" %><br />
-      <%= f.text_field :location, class: "signup-input" %>
-    </div>
-
-    <div class="signup-field field">
-      <%= f.label :linkedin_url, class: "signup-label" %><br />
-      <%= f.text_field :linkedin_url, class: "signup-input" %>
-    </div>
-
-    <div class="signup-field field">
-      <%= f.label :resume_url, class: "signup-label" %><br />
-      <%= f.text_field :resume_url, class: "signup-input" %>
-    </div>
-
-    <div class="signup-field field">
-      <%= f.label :role, class: "signup-label" %><br />
-      <%= f.select :role, options_for_select([["Applicant","applicant"], ["Recruiter","recruiter"], ["Admin","admin"]]), {}, { class: "signup-input" } %>
-    </div>
-
-    <div class="signup-field field">
-      <%= f.label :notification_pref, "Notification Preference", class: "signup-label" %><br />
-      <%= f.select :notification_pref, options_for_select([["Email","email"], ["SMS","sms"], ["None","none"]]), {}, { class: "signup-input" } %>
-    </div>
-
+    <!-- Password -->
     <div class="signup-field field">
       <%= f.label :password, class: "signup-label" %><br />
       <%= f.password_field :password, autocomplete: "new-password", class: "signup-input" %>
+      <small class="hint">
+        Must be at least 8 characters and include:
+        1 uppercase, 1 lowercase, 1 number, and 1 special character
+      </small>
     </div>
 
+    <!-- Password Confirmation -->
     <div class="signup-field field">
       <%= f.label :password_confirmation, class: "signup-label" %><br />
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "signup-input" %>
     </div>
 
+    <!-- Submit Button -->
     <div class="signup-actions">
       <%= f.submit "Sign up", class: "signup-submit" %>
     </div>
   <% end %>
-  <div class="signup-footer">
-  </div>
+  <div class="signup-footer"></div>
 </div>
