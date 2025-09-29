@@ -1,0 +1,9 @@
+<% jobs.each do |job| %>
+  <div class="card mb-2">
+    <div class="card-body">
+      <h5 class="card-title"><%= job.title %></h5>
+      <p class="card-text"><strong>Company:</strong> <%= job.company.name %></p>
+      <p class="card-text"><strong>Status:</strong> <%= job.status %></p>
+    </div>
+  </div>
+<% end %>
