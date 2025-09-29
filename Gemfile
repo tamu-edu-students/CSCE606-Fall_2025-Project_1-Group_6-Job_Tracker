@@ -4,8 +4,6 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -64,4 +62,22 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+end
+
+gem "rspec-rails", "~> 8.0", groups: [:development, :test]
+
+gem "cucumber-rails", "~> 4.0", groups: [:development, :test], require: nil
+
+gem "database_cleaner-active_record", "~> 2.2", groups: [:development, :test]
+
+gem "webdrivers", "~> 5.2", group: :test
+
+gem "jasmine-rails", "~> 0.15.0"
+
+group :production do
+  gem 'pg' # for Heroku deployment
+end
+
+group :development, :test do
+  gem 'sqlite3'
 end
