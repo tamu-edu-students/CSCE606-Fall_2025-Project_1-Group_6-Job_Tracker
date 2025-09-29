@@ -1,0 +1,11 @@
+<h1>Job Details</h1>
+
+<p><strong>Title:</strong> <%= @job.title %></p>
+<p><strong>Company:</strong> <%= @job.company&.name %></p>
+<p><strong>Link:</strong> <%= link_to @job.link, @job.link, target: '_blank' %></p>
+<p><strong>Status:</strong> <%= @job.status %></p>
+<p><strong>Deadline:</strong> <%= @job.deadline %></p>
+<p><strong>Notes:</strong> <%= @job.notes %></p>
+
+<%= link_to 'Edit', edit_job_path(@job), class: 'btn btn-secondary' %>
+<%= link_to 'Back', jobs_path, class: 'btn btn-light' %>
