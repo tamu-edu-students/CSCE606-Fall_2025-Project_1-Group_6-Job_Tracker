@@ -1,12 +1,12 @@
-<h1>My Job Applications</h1>
+<h1><%= @company.name %></h1>
+<p><strong>Website:</strong> <%= link_to @company.website, @company.website, target: '_blank' %></p>
 
-<%= link_to 'New Job Application', new_job_path, class: 'btn btn-primary' %>
-
+<h2>Job Applications for <%= @company.name %></h2>
 <table>
   <thead>
     <tr>
       <th>Title</th>
-      <th>Company</th>
+      <th>User</th>
       <th>Status</th>
       <th>Deadline</th>
       <th>Actions</th>
@@ -16,12 +16,11 @@
     <% @jobs.each do |job| %>
       <tr>
         <td><%= link_to job.title, job_path(job) %></td>
-        <td><%= job.company&.name %></td>
+        <td><%= job.user.full_name %></td>
         <td><%= job.status %></td>
         <td><%= job.deadline %></td>
         <td>
-          <%= link_to 'Edit', edit_job_path(job) %> |
-          <%= link_to 'Delete', job_path(job), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to 'Show', job_path(job) %>
         </td>
       </tr>
     <% end %>

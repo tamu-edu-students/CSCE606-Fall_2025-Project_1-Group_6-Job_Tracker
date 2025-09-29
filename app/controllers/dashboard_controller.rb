@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @jobs = Job.includes(:company).all
+    @jobs = current_user.jobs.includes(:company)
   end
 
   def personal_info
