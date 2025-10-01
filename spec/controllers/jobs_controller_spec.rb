@@ -1,3 +1,28 @@
+  let!(:job1) { Job.create!(title: 'Developer', company: company, user: user, status: 'applied') }
+  let!(:job2) { Job.create!(title: 'Designer', company: company, user: user, status: 'interview') }
+
+  describe 'GET #search' do
+    it 'returns jobs matching the title' do
+      get :search, params: { q: 'Developer' }, format: :js
+      expect(assigns(:jobs)).to include(job1)
+      expect(assigns(:jobs)).not_to include(job2)
+    end
+
+    it 'returns jobs matching the company name' do
+      get :search, params: { q: 'TestCo' }, format: :js
+      expect(assigns(:jobs)).to include(job1, job2)
+    end
+
+    it 'returns all jobs if query is blank' do
+      get :search, params: { q: '' }, format: :js
+      expect(assigns(:jobs)).to include(job1, job2)
+    end
+
+    it 'responds with JS format' do
+      get :search, params: { q: 'Developer' }, format: :js
+      expect(response.content_type).to eq 'text/javascript; charset=utf-8'
+    end
+  end
 require 'rails_helper'
 
 RSpec.describe JobsController, type: :controller do
