@@ -1,0 +1,29 @@
+<%= render partial: 'index', locals: { jobs: @jobs } %><h1>My Job Applications</h1>
+
+<%= link_to 'New Job Application', new_job_path, class: 'btn btn-primary' %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Company</th>
+      <th>Status</th>
+      <th>Deadline</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% (@jobs || []).each do |job| %>
+      <tr>
+        <td><%= link_to job.title, job_path(job) %></td>
+        <td><%= job.company&.name %></td>
+        <td><%= job.status %></td>
+        <td><%= job.deadline %></td>
+        <td>
+          <%= link_to 'Edit', edit_job_path(job) %> |
+          <%= link_to 'Delete', job_path(job), method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
