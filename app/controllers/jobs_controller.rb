@@ -26,7 +26,7 @@ class JobsController < ApplicationController
   def create
     @job = current_user.jobs.build(job_params)
     if @job.save
-      redirect_to @job, notice: 'Job application was successfully created.'
+      redirect_to dashboard_path, notice: 'Job application was successfully created.'
     else
       render :new
     end
@@ -37,7 +37,7 @@ class JobsController < ApplicationController
 
   def update
     if @job.update(job_params)
-      redirect_to @job, notice: 'Job application was successfully updated.'
+      redirect_to dashboard_path, notice: 'Job application was successfully updated.'
     else
       render :edit
     end
@@ -45,7 +45,7 @@ class JobsController < ApplicationController
 
   def destroy
     @job.destroy
-    redirect_to jobs_url, notice: 'Job application was successfully deleted.'
+    redirect_to dashboard_path, notice: 'Job application was successfully deleted.'
   end
 
   private
