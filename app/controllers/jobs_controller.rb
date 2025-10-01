@@ -5,6 +5,17 @@ class JobsController < ApplicationController
     @jobs = current_user.jobs.includes(:company)
   end
 
+  def search
+    query = params[:q].to_s.strip.downcase
+    @jobs = current_user.jobs.includes(:company)
+    if query.present?
+      @jobs = @jobs.where("LOWER(jobs.title) LIKE ? OR LOWER(companies.name) LIKE ?", "%#{query}%", "%#{query}%").references(:company)
+    end
+    respond_to do |format|
+      format.js { render partial: 'jobs/table', locals: { jobs: @jobs } }
+    end
+  end
+
   def show
   end
 
