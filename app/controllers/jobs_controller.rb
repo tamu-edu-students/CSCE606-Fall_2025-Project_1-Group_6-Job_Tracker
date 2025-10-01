@@ -46,8 +46,3 @@ class JobsController < ApplicationController
       params.require(:job).permit(:title, :company_id, :link, :deadline, :notes, :status)
     end
 end
-
-class JobsController < ApplicationController
-  def index
-  end
-end

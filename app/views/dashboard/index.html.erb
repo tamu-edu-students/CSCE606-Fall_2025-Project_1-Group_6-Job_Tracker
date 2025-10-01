@@ -1,4 +1,7 @@
-<h1 class="text-center fw-bold text-primary mb-4">Dashboard</h1>
+<div class="container d-flex justify-content-between align-items-center mt-4">
+  <h1 class="page-title mb-0">Dashboard</h1>
+  <%= link_to "My Jobs List", my_jobs_path, class: "btn btn-outline-primary" %>
+</div>
 
 <div class="container my-4">
   <div class="card shadow-sm">
@@ -14,7 +17,7 @@
               </div>
             </div>
             <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
         </div>
         <div class="col-md-3">
@@ -27,7 +30,7 @@
               </div>
             </div>
             <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
         </div>
         <div class="col-md-3">
@@ -40,7 +43,7 @@
               </div>
             </div>
             <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
         </div>
         <div class="col-md-3">
@@ -53,14 +56,10 @@
               </div>
             </div>
             <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
+            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<h2>My Job Applications</h2>
-<%= render partial: 'jobs/index', locals: { jobs: @jobs } %>
