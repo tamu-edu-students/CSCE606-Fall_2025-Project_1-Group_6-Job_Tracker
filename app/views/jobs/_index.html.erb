@@ -1,13 +1,14 @@
 
-<h1>My Job Applications</h1>
-
 <%= link_to 'New Job Application', new_job_path, class: 'btn btn-primary' %>
 
 <div class="mb-3" data-controller="job-search">
-  <input type="text" data-job-search-target="input" class="form-control" placeholder="Search jobs by title or company...">
+  <div class="input-group">
+    <input type="text" data-job-search-target="input" class="form-control" placeholder="Search jobs by title or company...">
+    <button type="button" data-action="click->job-search#search" class="btn btn-primary">Search</button>
+  </div>
 </div>
 
-<table>
+<table id="jobs-table">
   <thead>
     <tr>
       <th>Title</th>

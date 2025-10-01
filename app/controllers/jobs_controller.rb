@@ -7,12 +7,16 @@ class JobsController < ApplicationController
 
   def search
     query = params[:q].to_s.strip.downcase
-    @jobs = current_user.jobs.includes(:company)
+    @jobs = current_user.jobs.joins(:company)
     if query.present?
-      @jobs = @jobs.where("LOWER(jobs.title) LIKE ? OR LOWER(companies.name) LIKE ?", "%#{query}%", "%#{query}%").references(:company)
+      @jobs = @jobs.where("LOWER(jobs.title) LIKE ? OR LOWER(companies.name) LIKE ?", "%#{query}%", "%#{query}%")
     end
     respond_to do |format|
       format.js { render partial: 'jobs/table', locals: { jobs: @jobs } }
+      format.json do
+        rows = render_to_string(partial: 'jobs/rows', locals: { jobs: @jobs })
+        render json: { rows: rows }
+      end
     end
   end
 

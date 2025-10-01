@@ -10,9 +10,14 @@ export default class extends Controller {
   search() {
     const query = this.inputTarget.value
     fetch(`/jobs/search?q=${encodeURIComponent(query)}`, {
-      headers: { 'Accept': 'text/javascript' }
+      headers: { 'Accept': 'application/json' }
     })
-    .then(response => response.text())
-    .then(js => eval(js))
+    .then(response => response.json())
+    .then(data => {
+      const jobsTable = document.getElementById('jobs-table')
+      const dashboardJobsTable = document.getElementById('dashboard-jobs-table')
+      if (jobsTable) jobsTable.querySelector('tbody').innerHTML = data.rows
+      if (dashboardJobsTable) dashboardJobsTable.querySelector('tbody').innerHTML = data.rows
+    })
   }
 }
