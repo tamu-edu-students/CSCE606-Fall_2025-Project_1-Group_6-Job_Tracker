@@ -7,9 +7,11 @@ class JobsController < ApplicationController
 
   def search
     query = params[:q].to_s.strip.downcase
-    @jobs = current_user.jobs.joins(:company)
+    # use left_joins so jobs without a company don't raise errors and are still searchable
+    @jobs = current_user.jobs.left_joins(:company)
     if query.present?
-      @jobs = @jobs.where("LOWER(jobs.title) LIKE ? OR LOWER(companies.name) LIKE ?", "%#{query}%", "%#{query}%")
+      # use COALESCE to safely compare company name when it's NULL
+      @jobs = @jobs.where("LOWER(jobs.title) LIKE ? OR LOWER(COALESCE(companies.name, '')) LIKE ?", "%#{query}%", "%#{query}%")
     end
     respond_to do |format|
       format.js { render partial: 'jobs/table', locals: { jobs: @jobs } }
