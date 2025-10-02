@@ -23,6 +23,24 @@ RSpec.describe 'Jobs CRUD', type: :request do
     expect(Job.find_by(title: nil)).to be_nil
   end
 
+  it 'does not create a job with nil company' do
+    post jobs_path, params: { job: { title: 'NoCompany', user_id: user.id, company_id: nil } }
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(Job.find_by(title: 'NoCompany')).to be_nil
+  end
+
+  it 'rejects malformed deadline' do
+    post jobs_path, params: { job: { title: 'BadDate', user_id: user.id, company_id: company.id, deadline: 'not-a-date' } }
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(Job.find_by(title: 'BadDate')).to be_nil
+  end
+
+  it 'rejects deadline beyond 2035' do
+    post jobs_path, params: { job: { title: 'FarDate', user_id: user.id, company_id: company.id, deadline: '2040-01-01' } }
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(Job.find_by(title: 'FarDate')).to be_nil
+  end
+
   it 'shows a job' do
     job = Job.create!(title: 'ShowMe', user: user, company: company)
     get job_path(job)
