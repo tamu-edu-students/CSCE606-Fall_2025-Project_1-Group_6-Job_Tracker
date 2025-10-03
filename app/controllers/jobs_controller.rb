@@ -3,7 +3,27 @@ class JobsController < ApplicationController
 
   def index
     @jobs = current_user.jobs.includes(:company)
+
+    sort = params[:sort]
+    direction = params[:direction] == "desc" ? :desc : :asc
+
+    case sort
+    when "title"
+      @jobs = @jobs.order(title: direction)
+    when "company"
+      @jobs = @jobs.joins(:company).order("companies.name #{direction}")
+    when "status"
+      @jobs = @jobs.order(status: direction)
+    when "deadline"
+      @jobs = @jobs.order(deadline: direction)
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
+
 
   def show
   end
