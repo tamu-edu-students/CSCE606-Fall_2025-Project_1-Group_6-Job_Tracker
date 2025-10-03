@@ -45,8 +45,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_28_060000) do
     t.string "location"
     t.string "linkedin_url"
     t.string "resume_url"
-    t.string "role"
-    t.string "notification_pref"
     t.boolean "profile_completed"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

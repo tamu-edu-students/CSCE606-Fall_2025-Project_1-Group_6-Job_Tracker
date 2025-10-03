@@ -32,16 +32,6 @@
     <%= f.url_field :resume_url %>
   </div>
 
-  <div class="field edit-field">
-    <%= f.label :role %><br />
-    <%= f.select :role, options_for_select([["Applicant","applicant"], ["Recruiter","recruiter"], ["Admin","admin"]], resource.role) %>
-  </div>
-
-  <div class="field edit-field">
-    <%= f.label :notification_pref, "Notification Preference" %><br />
-    <%= f.select :notification_pref, options_for_select([["Email","email"], ["SMS","sms"], ["None","none"]], resource.notification_pref) %>
-  </div>
-
   <!-- Default Devise fields -->
   <div class="field edit-field">
     <%= f.label :email %><br />
