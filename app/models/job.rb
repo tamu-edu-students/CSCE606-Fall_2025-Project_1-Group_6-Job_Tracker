@@ -1,6 +1,7 @@
 class Job < ApplicationRecord
   belongs_to :user
   belongs_to :company
+<<<<<<< HEAD
   validates :title, presence: true
   validates :user, presence: true
   validates :company, presence: true
@@ -15,4 +16,8 @@ class Job < ApplicationRecord
       errors.add(:deadline, "must be on or before #{max}")
     end
   end
+=======
+
+  scope :with_status, ->(status) { where("LOWER(status) = ?", status.to_s.downcase) }
+>>>>>>> main
 end

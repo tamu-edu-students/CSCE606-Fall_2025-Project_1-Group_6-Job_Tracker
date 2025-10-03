@@ -37,7 +37,6 @@ body {
 	background: #0056b3;
 }
 
-/* Feature cards layout: 2x2 or 1x4 only */
 .features-cards {
 	display: grid;
     width:100%;
@@ -182,23 +181,19 @@ body {
   padding: 0 1rem;
 }
 
-/* app/assets/stylesheets/application.css */
 
 .info-container {
-  /* Center the container itself on the page */
   margin: 4rem auto;
-  max-width: 500px; /* Prevents it from being too wide on large screens */
+  max-width: 500px; 
 }
 
-/* Styles the heading to look like the "Dashboard" heading */
 .page-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #0d6efd; /* Bootstrap's primary blue */
+  color: #0d6efd; 
   margin-bottom: 1.5rem;
 }
 
-/* Adds space between the stacked buttons */
 .info-buttons {
   display: flex;
   flex-direction: column;
@@ -219,8 +214,6 @@ body {
 		padding: 1.5rem 1rem;
 	}
 }
-
-/* Card color, shadow, and padding */
 
 .feature-card {
 	background: #fff;
@@ -311,4 +304,61 @@ body {
 	font-size: 0.85em;
 	color: #666;
 	margin-top: 4px;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0d6efd; 
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.job-card {
+  border-radius: 15px;
+  color: white; 
+}
+.job-card.applied {
+  background-color: #228cb6;
+}
+
+.job-card.interview {
+  background-color: #cd7c2c;
+}
+
+.job-card.offer {
+  background-color: #44c161; 
+}
+
+.job-card.rejected {
+  background-color: #b83f4b;
+}
+
+.status-badge {
+  font-size: 0.9rem;
+  padding: 0.4em 0.7em;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: white;
+}
+.status-badge.applied {
+  background-color: #007bff; 
+}
+
+.status-badge.interview {
+  background-color: #ef7007;
+}
+
+.status-badge.offer {
+  background-color: #28a745;
+}
+
+.status-badge.rejected {
+  background-color: #e23a4b;
+}
+
+.table thead th a {
+  color: black;            /* Sets the font color to black */
+  text-decoration: none;   /* Removes the underline from the links */
 }

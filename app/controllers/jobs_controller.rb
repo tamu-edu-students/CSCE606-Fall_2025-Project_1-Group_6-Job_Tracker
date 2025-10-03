@@ -3,10 +3,38 @@ class JobsController < ApplicationController
   before_action :set_job, only: %i[show edit update destroy]
 
   def index
+<<<<<<< HEAD
     @jobs = Job.all.includes(:company)
   end
 
   def show; end
+=======
+    @jobs = current_user.jobs.includes(:company)
+
+    sort = params[:sort]
+    direction = params[:direction] == "desc" ? :desc : :asc
+
+    case sort
+    when "title"
+      @jobs = @jobs.order(title: direction)
+    when "company"
+      @jobs = @jobs.joins(:company).order("companies.name #{direction}")
+    when "status"
+      @jobs = @jobs.order(status: direction)
+    when "deadline"
+      @jobs = @jobs.order(deadline: direction)
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
+
+  def show
+  end
+>>>>>>> main
 
   def new
     @job = Job.new
@@ -65,6 +93,7 @@ class JobsController < ApplicationController
 
   private
 
+<<<<<<< HEAD
   def set_job
     @job = Job.find_by(id: params[:id])
     head :not_found unless @job
@@ -73,4 +102,9 @@ class JobsController < ApplicationController
   def job_params
     params.require(:job).permit(:title, :company_id, :link, :deadline, :notes, :status, :user_id)
   end
+=======
+    def job_params
+      params.require(:job).permit(:title, :company_id, :link, :deadline, :notes, :status)
+    end
+>>>>>>> main
 end

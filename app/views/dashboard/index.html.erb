@@ -1,65 +1,65 @@
-<h1 class="text-center fw-bold text-primary mb-4">Dashboard</h1>
+<div class="container d-flex justify-content-between align-items-center mt-4">
+  <h1 class="page-title mb-0">Dashboard</h1>
+  <%= link_to "My Jobs List", my_jobs_path, class: "btn btn-outline-primary" %>
+</div>
 
 <div class="container my-4">
   <div class="card shadow-sm">
     <div class="card-body">
       <div class="row text-center fw-semibold">
         <div class="col-md-3">
-          <h4>Applied</h4>
-          <% @jobs.select { |job| job.status == "applied" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>📩 Applied</h4>
+          <% Job.with_status("applied").each do |job| %>
+            <div class="card mb-3 job-card applied">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company&.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
         <div class="col-md-3">
-          <h4>Interview</h4>
-          <% @jobs.select { |job| job.status == "interview" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>📞 Interview</h4>
+          <% Job.with_status("interview").each do |job| %>
+            <div class="card mb-3 job-card interview">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
         <div class="col-md-3">
-          <h4>Offer</h4>
-          <% @jobs.select { |job| job.status == "offer" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>✅ Offer</h4>
+          <% Job.with_status("offer").each do |job| %>
+            <div class="card mb-3 job-card offer">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
         <div class="col-md-3">
-          <h4>Rejected</h4>
-          <% @jobs.select { |job| job.status == "rejected" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>❌ Rejected</h4>
+          <% Job.with_status("rejected").each do |job| %>
+            <div class="card mb-3 job-card rejected">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", class: "btn btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
       </div>
     </div>
   </div>
 </div>
+<<<<<<< HEAD
 
 
 <h2>My Job Applications</h2>
@@ -86,3 +86,5 @@
     <%= render partial: 'jobs/rows', locals: { jobs: @jobs } %>
   </tbody>
 </table>
+=======
+>>>>>>> main
