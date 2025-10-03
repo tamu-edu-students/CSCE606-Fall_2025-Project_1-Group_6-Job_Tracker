@@ -8,56 +8,52 @@
     <div class="card-body">
       <div class="row text-center fw-semibold">
         <div class="col-md-3">
-          <h4>Applied</h4>
-          <% @jobs.select { |job| job.status == "applied" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>📩 Applied</h4>
+          <% Job.with_status("applied").each do |job| %>
+            <div class="card mb-3 job-card applied">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
         <div class="col-md-3">
-          <h4>Interview</h4>
-          <% @jobs.select { |job| job.status == "interview" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>📞 Interview</h4>
+          <% Job.with_status("interview").each do |job| %>
+            <div class="card mb-3 job-card interview">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
         <div class="col-md-3">
-          <h4>Offer</h4>
-          <% @jobs.select { |job| job.status == "offer" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>✅ Offer</h4>
+          <% Job.with_status("offer").each do |job| %>
+            <div class="card mb-3 job-card offer">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
         <div class="col-md-3">
-          <h4>Rejected</h4>
-          <% @jobs.select { |job| job.status == "rejected" }.each do |job| %>
-            <div class="card mb-3">
+          <h4>❌ Rejected</h4>
+          <% Job.with_status("rejected").each do |job| %>
+            <div class="card mb-3 job-card rejected">
               <div class="card-body">
                 <h5><%= job.title %></h5>
                 <p><strong>Company:</strong> <%= job.company.name %></p>
               </div>
             </div>
-            <!-- Add Job Button -->
-            <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
           <% end %>
+          <%= link_to "➕ Add Job", new_job_path, class: "btn-primary w-100 mt-2" %>
         </div>
       </div>
     </div>
