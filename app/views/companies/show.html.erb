@@ -1,28 +1,31 @@
 <h1><%= @company.name %></h1>
-<p><strong>Website:</strong> <%= link_to @company.website, @company.website, target: '_blank' %></p>
 
-<h2>Job Applications for <%= @company.name %></h2>
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>User</th>
-      <th>Status</th>
-      <th>Deadline</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @jobs.each do |job| %>
+<p><strong>Website:</strong> <%= @company.website %></p>
+
+<h2>Jobs at this Company</h2>
+<% if @jobs.any? %>
+  <table>
+    <thead>
       <tr>
-        <td><%= link_to job.title, job_path(job) %></td>
-        <td><%= job.user.full_name %></td>
-        <td><%= job.status %></td>
-        <td><%= job.deadline %></td>
-        <td>
-          <%= link_to 'Show', job_path(job) %>
-        </td>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Deadline</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @jobs.each do |job| %>
+        <tr>
+          <td><%= link_to job.title, job_path(job) %></td>
+          <td><%= job.status %></td>
+          <td><%= job.deadline %></td>
+          <td><%= link_to 'Show', job_path(job) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No jobs found for this company.</p>
+<% end %>
+
+<%= link_to 'Back to Companies', companies_path %>

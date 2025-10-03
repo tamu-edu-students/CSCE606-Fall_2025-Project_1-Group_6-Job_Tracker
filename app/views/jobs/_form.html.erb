@@ -1,4 +1,4 @@
-<%= form_with(model: job, local: true) do |form| %>
+<%= form_with model: job, local: true do |form| %>
   <% if job.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(job.errors.count, "error") %> prohibited this job from being saved:</h2>
@@ -23,6 +23,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :user_id, "User" %>
+    <%= form.collection_select :user_id, User.all, :id, :full_name, prompt: "Select User" %>
+  </div>
+
+  <div class="field">
     <%= form.label :link %>
     <%= form.url_field :link %>
   </div>
@@ -34,16 +39,20 @@
 
   <div class="field">
     <%= form.label :status %>
-    <%= form.text_field :status %>
+    <%= form.select :status, options_for_select([
+      ['Applied', 'applied'],
+      ['Interview Scheduled', 'interview'],
+      ['Rejected', 'rejected'],
+      ['Offer Received', 'offer']
+    ], job.status), { prompt: 'Select Status' } %>
   </div>
 
   <div class="field">
     <%= form.label :notes %>
-    <%= form.text_area :notes %>
+    <%= form.text_area :notes, rows: 4 %>
   </div>
 
   <div class="actions">
     <%= form.submit %>
-    <%= link_to 'Cancel', dashboard_path, class: 'btn btn-light ms-2' %>
   </div>
 <% end %>
