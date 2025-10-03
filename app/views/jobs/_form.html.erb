@@ -22,10 +22,7 @@
     <%= link_to 'Add New Company', new_company_path, target: '_blank', class: 'btn btn-link' %>
   </div>
 
-  <div class="field">
-    <%= form.label :user_id, "User" %>
-    <%= form.collection_select :user_id, User.all, :id, :full_name, prompt: "Select User" %>
-  </div>
+
 
   <div class="field">
     <%= form.label :link %>

@@ -1,11 +1,13 @@
 class CompaniesController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     @companies = Company.all
   end
 
   def show
     @company = Company.find(params[:id])
-    @jobs = @company.jobs
+    @jobs = @company.jobs.where(user: current_user)
   end
 
   def new
