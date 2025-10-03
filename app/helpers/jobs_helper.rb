@@ -13,5 +13,21 @@ module JobsHelper
     else 
       content_tag(:span, "Unknown", class: "badge bg-secondary") 
     end 
-  end 
+  end
+
+  def next_direction(column, current_sort, current_direction)
+    if current_sort == column
+      current_direction == "asc" ? "desc" : "asc"
+    else
+      "asc"
+    end
+  end
+
+  def sort_indicator(column, current_sort, current_direction)
+    if current_sort == column
+      current_direction == "asc" ? "↑" : "↓"
+    else
+      ""
+    end
+  end
 end
