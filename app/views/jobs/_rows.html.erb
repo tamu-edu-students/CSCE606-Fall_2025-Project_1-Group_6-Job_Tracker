@@ -1,0 +1,12 @@
+<% (jobs || []).each do |job| %>
+  <tr>
+    <td><%= link_to job.title, job_path(job) %></td>
+    <td><%= job.company&.name %></td>
+    <td><%= job.status %></td>
+    <td><%= job.deadline %></td>
+    <td>
+      <%= link_to 'Edit', edit_job_path(job) %> |
+      <%= button_to 'Delete', job_path(job), method: :delete, data: { confirm: 'Are you sure?' }, form: { class: 'd-inline' }, class: 'btn btn-link p-0' %>
+    </td>
+  </tr>
+<% end %>

@@ -1,0 +1,9 @@
+const jobsTable = document.getElementById('jobs-table');
+const dashboardJobsTable = document.getElementById('dashboard-jobs-table');
+const newRows = `<%= j(render partial: 'jobs/rows', locals: { jobs: jobs }) %>`;
+if (jobsTable) {
+	jobsTable.querySelector('tbody').innerHTML = newRows;
+}
+if (dashboardJobsTable) {
+	dashboardJobsTable.querySelector('tbody').innerHTML = newRows;
+}

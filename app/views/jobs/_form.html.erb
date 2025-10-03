@@ -1,4 +1,4 @@
-<%= form_with(model: job, local: true) do |form| %>
+<%= form_with model: job, local: true do |form| %>
   <% if job.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(job.errors.count, "error") %> prohibited this job from being saved:</h2>
@@ -22,6 +22,8 @@
     <%= link_to 'Add New Company', new_company_path, target: '_blank', class: 'btn btn-link' %>
   </div>
 
+
+
   <div class="field">
     <%= form.label :link %>
     <%= form.url_field :link %>
@@ -34,12 +36,17 @@
 
   <div class="field">
     <%= form.label :status %>
-    <%= form.text_field :status %>
+    <%= form.select :status, options_for_select([
+      ['Applied', 'applied'],
+      ['Interview Scheduled', 'interview'],
+      ['Rejected', 'rejected'],
+      ['Offer Received', 'offer']
+    ], job.status), { prompt: 'Select Status' } %>
   </div>
 
   <div class="field">
     <%= form.label :notes %>
-    <%= form.text_area :notes %>
+    <%= form.text_area :notes, rows: 4 %>
   </div>
 
   <div class="actions">
