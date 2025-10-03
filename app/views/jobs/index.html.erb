@@ -23,8 +23,8 @@
         <tr>
           <td><%= link_to job.title, job_path(job) %></td>
           <td><%= job.company&.name %></td>
-          <td><%= job.status %></td>
-          <td><%= job.deadline %></td>
+          <td><%= status_badge(job.status) %></td>
+          <td><%= job.deadline.strftime("%B %d, %Y") if job.deadline.present? %></td>
           <td>
             <%= link_to 'Edit', edit_job_path(job), class: 'btn btn-sm btn-secondary' %>
             <%= link_to 'Delete', job_path(job), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
