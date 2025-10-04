@@ -8,6 +8,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -67,6 +68,18 @@ RSpec.configure do |config|
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
+  # Include Devise test helpers for request specs so tests can sign in users.
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  # Use Warden test helpers to log in users in request specs
+  config.include Warden::Test::Helpers
+
+  config.before(:suite) do
+    Warden.test_mode!
+  end
+
+  config.after(:suite) do
+    Warden.test_reset!
+  end
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end

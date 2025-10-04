@@ -4,8 +4,28 @@ class JobsController < ApplicationController
   before_action :set_job, only: %i[show edit update destroy]
 
   def index
-    # Simple, user-scoped list for the /jobs page that matches the dashboard.
-    @jobs = current_user.jobs.includes(:company).order(created_at: :desc)
+    # Restore full behavior: start with the user's jobs, allow optional
+    # sorting by column/direction, and support Turbo stream responses.
+    @jobs = current_user.jobs.includes(:company)
+
+    sort = params[:sort]
+    direction = params[:direction] == "desc" ? :desc : :asc
+
+    case sort
+    when "title"
+      @jobs = @jobs.order(title: direction)
+    when "company"
+      @jobs = @jobs.joins(:company).order("companies.name #{direction}")
+    when "status"
+      @jobs = @jobs.order(status: direction)
+    when "deadline"
+      @jobs = @jobs.order(deadline: direction)
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
 
