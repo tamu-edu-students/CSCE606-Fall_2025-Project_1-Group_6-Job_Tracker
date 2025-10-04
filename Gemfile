@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-
+ruby "3.3.4"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -62,15 +62,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webdrivers", "~> 5.2"
 end
-
-gem "rspec-rails", "~> 8.0", groups: [:development, :test]
-
-gem "cucumber-rails", "~> 4.0", groups: [:development, :test], require: nil
-
-gem "database_cleaner-active_record", "~> 2.2", groups: [:development, :test]
-
-gem "webdrivers", "~> 5.2", group: :test
 
 gem "jasmine-rails", "~> 0.15.0"
 
@@ -80,4 +73,7 @@ end
 
 group :development, :test do
   gem 'sqlite3'
+  gem "rspec-rails", "~> 8.0"
+  gem "cucumber-rails", "~> 4.0", require: nil
+  gem "database_cleaner-active_record", "~> 2.2"
 end
