@@ -4,6 +4,6 @@
     "jasmine-core": "^5.11.0"
   },
   "scripts": {
-    "test:jasmine": "jasmine-browser-runner runSpecs"
+    "test:jasmine": "CHROME_BIN=$(which google-chrome-stable) jasmine-browser-runner runSpecs --browser=chrome --capabilities.chromeOptions.args='[\"--headless=new\",\"--no-sandbox\",\"--disable-gpu\",\"--disable-dev-shm-usage\"]'"
   }
 }
