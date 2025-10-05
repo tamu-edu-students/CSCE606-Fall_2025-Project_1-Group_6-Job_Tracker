@@ -85,8 +85,8 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <%= render partial: 'jobs/rows', locals: { jobs: @jobs } %>
+        <tbody>
+        <%= render partial: 'jobs/rows', locals: { jobs: @jobs, from: 'dashboard' } %>
       </tbody>
     </table>
   </div>

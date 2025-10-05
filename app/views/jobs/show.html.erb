@@ -1,11 +1,20 @@
-<h1><%= @job.title %></h1>
+<div class="card">
+	<div class="card-body">
+		<h1><%= @job.title %></h1>
 
-<p><strong>Company:</strong> <%= @job.company&.name %></p>
-<p><strong>Status:</strong> <%= @job.status %></p>
-<p><strong>Link:</strong> <%= link_to @job.link, @job.link if @job.link.present? %></p>
-<p><strong>Deadline:</strong> <%= @job.deadline %></p>
-<p><strong>Notes:</strong></p>
-<p><%= simple_format(@job.notes) if @job.notes.present? %></p>
+		<p><strong>Company:</strong> <%= @job.company&.name %></p>
+		<p><strong>Status:</strong> <%= @job.status %></p>
+		<p><strong>Link:</strong> <%= link_to @job.link, @job.link if @job.link.present? %></p>
+		<p><strong>Deadline:</strong> <%= @job.deadline %></p>
+		<p><strong>Notes:</strong></p>
+		<p><%= simple_format(@job.notes) if @job.notes.present? %></p>
 
-<%= link_to 'Edit', edit_job_path(@job) %> |
-<%= link_to 'Back', jobs_path %>
+		<%= link_to 'Edit', edit_job_path(@job) %> |
+		<%# Back should return to dashboard when we came from there (preserve via params or referer) %>
+		<% if params[:from] == 'dashboard' || request.referer&.include?('/dashboard') %>
+			<%= link_to 'Back', dashboard_path %>
+		<% else %>
+			<%= link_to 'Back', jobs_path %>
+		<% end %>
+	</div>
+</div>
