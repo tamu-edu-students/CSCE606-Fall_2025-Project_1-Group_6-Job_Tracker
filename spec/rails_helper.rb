@@ -73,6 +73,9 @@ RSpec.configure do |config|
   # Use Warden test helpers to log in users in request specs
   config.include Warden::Test::Helpers
 
+  # Include Devise controller helpers for controller specs (provides `sign_in`)
+  config.include Devise::Test::ControllerHelpers, type: :controller
+
   config.before(:suite) do
     Warden.test_mode!
   end
