@@ -159,17 +159,16 @@ body {
 }
 
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
+  /* Make footer participate in normal document flow so it doesn't overlap content */
+  position: static;
   width: 100%;
   background: #ffffff;
   border-top: 1px solid #E2E8F0;
   text-align: center;
   padding: 1rem 0;
-  font-size: 1 rem;
+  margin-top: 2rem; /* space between content and footer */
+  font-size: 1rem;
   color: #718096;
-  z-index: 100;
 }
 .footer-content {
 	max-width: 1000px;
