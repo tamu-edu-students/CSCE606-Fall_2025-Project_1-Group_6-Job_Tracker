@@ -112,6 +112,75 @@ Background Jobs handle async tasks (Notifications / CSV Import)
 
 ---
 
+## Jobs & Companies — Features and Tests
+
+This project provides a small Job Tracker with the following user-facing features and routes (concise):
+
+- Jobs CRUD: create, read, update, delete job applications.
+  - Routes: GET /jobs (index), GET /jobs/:id (show), GET /jobs/new, POST /jobs, GET /jobs/:id/edit, PATCH /jobs/:id, DELETE /jobs/:id
+  - Redirects: creating a job currently redirects to the dashboard so users see new entries in context; editing/deleting will return to the dashboard if the action was initiated from the dashboard (tracked via params[:from] or referer), otherwise it returns to the jobs list (`jobs_path`).
+- Search bar: the jobs list (`/jobs`) contains the search input (client-side filtering with Stimulus for live UI filtering). The search input is present for non-JS clients as well.
+- Company CRUD: create and list companies. Companies created from the job form return the user to the new-job form (uses `return_to: 'jobs_new'` or referer detection).
+
+What lives where (important files):
+- Jobs controller and views: `app/controllers/jobs_controller.rb`, `app/views/jobs/*`.
+- Stimulus search controller: `app/javascript/controllers/job_search_controller.js` (client-side filtering of `#jobs-table`).
+- Companies controller and views: `app/controllers/companies_controller.rb`, `app/views/companies/*`.
+
+Test coverage (what we ran locally)
+- RSpec (job-focused)
+  - `spec/models/job_spec.rb` — model validations for presence of title, user, company.
+    - Acceptance: invalid without title/user/company; valid with all required attributes.
+  - `spec/requests/jobs_crud_spec.rb` — request tests covering index/show/new/create/update/delete and error cases.
+    - Key cases: create with valid attrs redirects and persists; create with nil title or company or malformed deadline returns 422 and does not persist; update/delete when `from: 'dashboard'` redirect to dashboard.
+    - Acceptance: response status and database state match expectations (redirects, 422 error pages, persisted records).
+  - `spec/controllers/jobs_controller_spec.rb` (controller → request smoke tests) — basic sanity checks for REST endpoints.
+  - `spec/system/*_back_spec.rb` — system specs that verify the Back navigation behavior from the jobs/new/edit/show flows (Back now returns to jobs list when opened from jobs list; when opened from dashboard the behavior still returns to dashboard). These tests drive the UI via Capybara rack_test.
+
+- RSpec (company-focused)
+  - `spec/models/company_spec.rb` — validation tests for presence of name and website.
+  - `spec/requests/companies_request_spec.rb` — request-level coverage for companies (index, show scoped to current user jobs, new, create, create-with-return-to-job-flow, invalid-create showing validation errors). Acceptance: HTTP status checks, DB changes, and correct redirect destinations.
+  - `spec/system/company_from_job_spec.rb` — system test that creates a company from the job form and ensures the user returns to the job form and the new company appears in the select.
+
+- Cucumber (feature tests)
+  - `features/jobs.feature` — high-level create/edit/delete flows executed as a signed-in user.
+  - `features/dashboard_navigation.feature` — verifies opening a job from the jobs list and that Back returns to the jobs list (adjusted because the dashboard no longer contains the jobs table).
+  - `features/search.feature` — verifies the search input is present on the jobs list. (Live client filtering is exercised in system/JS tests; Cucumber checks non-JS presence/behavior.)
+  - `features/company_from_job.feature` — verifies the create-company-from-job flow and return-to-job behavior.
+
+Brief acceptance criteria (concise bullets)
+- Job create: POST /jobs with valid params creates a Job record and redirects (see route-level redirect behaviour). Invalid params (blank title, blank company, malformed deadline) return 422 and show errors.
+- Job update: PATCH /jobs/:id with valid params updates the record; when `from: 'dashboard'` or referer is dashboard, redirect to dashboard, otherwise to jobs list.
+- Job delete: DELETE /jobs/:id removes the record and redirects back to the source (dashboard or jobs list).
+- Search bar: Input exists on jobs list; client-side filtering hides non-matching rows in JS-enabled clients. Non-JS clients can still see the input and use server-side filtering if implemented.
+- Company create from job: creating a company via the Add New Company link returns to the job form and the new company is present in the company select.
+
+Commands to run tests (copyable)
+```bash
+# Run all RSpec tests (slow)
+bundle exec rspec
+
+# Run job-related RSpec tests (focused)
+bundle exec rspec spec/models/job_spec.rb spec/requests/jobs_crud_spec.rb spec/controllers/jobs_controller_spec.rb spec/system/new_job_back_spec.rb spec/system/job_show_back_from_dashboard_spec.rb spec/system/dashboard_edit_back_spec.rb
+
+# Run company-related RSpec tests
+bundle exec rspec spec/models/company_spec.rb spec/requests/companies_request_spec.rb spec/system/company_from_job_spec.rb
+
+# Run the Cucumber feature suite
+bundle exec cucumber --format pretty
+
+# Run a single RSpec file for quick feedback
+bundle exec rspec spec/requests/jobs_crud_spec.rb
+```
+
+Notes and suggested additional tests (small list)
+- Add authorization tests ensuring users cannot access or modify other users' jobs (request specs). This is high-priority for data safety.
+- Add `update_status` request specs to validate permitted enum values and behavior.
+- Add deadline boundary tests (e.g., '2035-12-31' accepted) and status enum negative tests.
+
+If you'd like, I can add the high-priority missing specs now (ownership + update_status + user_id tamper protection) and run the suite.
+
+
 ## Jobs & Search
 
 - Location: the search bar is available on the Jobs list page (`/jobs`) and on the main Dashboard (`/dashboard`).
