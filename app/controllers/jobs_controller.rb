@@ -40,7 +40,7 @@ class JobsController < ApplicationController
     # Build job associated with the signed-in user only.
     if params.dig(:job, :company_id).blank?
       @job = current_user.jobs.new(job_params)
-      @job.errors.add(:company, 'must be present')
+      @job.errors.add(:company, "must be present")
       render :new, status: :unprocessable_entity and return
     end
 
@@ -52,7 +52,7 @@ class JobsController < ApplicationController
         params[:job][:deadline] = parsed
       rescue ArgumentError
         @job = current_user.jobs.new(job_params)
-        @job.errors.add(:deadline, 'is malformed')
+        @job.errors.add(:deadline, "is malformed")
         render :new, status: :unprocessable_entity and return
       end
     end
@@ -61,7 +61,7 @@ class JobsController < ApplicationController
     if @job.save
       # After creating a job, take the user to their dashboard so they see the
       # newly created entry in context.
-      redirect_to dashboard_path, notice: 'Job created'
+      redirect_to dashboard_path, notice: "Job created"
     else
       render :new, status: :unprocessable_entity
     end
@@ -77,7 +77,7 @@ class JobsController < ApplicationController
         parsed = Date.iso8601(params_deadline.to_s)
         params[:job][:deadline] = parsed
       rescue ArgumentError
-        @job.errors.add(:deadline, 'is malformed')
+        @job.errors.add(:deadline, "is malformed")
         render :edit, status: :unprocessable_entity and return
       end
     end
@@ -85,10 +85,10 @@ class JobsController < ApplicationController
     if @job.update(job_params)
       # If the edit started from the dashboard, send the user back there so
       # they see the updated entry in the table. Fall back to jobs_path.
-      if params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')
-        redirect_to dashboard_path, notice: 'Job updated'
+      if params[:from] == "dashboard" || (request.referer || "").include?("/dashboard")
+        redirect_to dashboard_path, notice: "Job updated"
       else
-        redirect_to jobs_path, notice: 'Job updated'
+        redirect_to jobs_path, notice: "Job updated"
       end
     else
       render :edit, status: :unprocessable_entity
@@ -98,10 +98,10 @@ class JobsController < ApplicationController
   def destroy
     @job.destroy
     # If the delete was triggered from the dashboard, return there; otherwise go to jobs list.
-    if params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')
-      redirect_to dashboard_path, notice: 'Job deleted'
+    if params[:from] == "dashboard" || (request.referer || "").include?("/dashboard")
+      redirect_to dashboard_path, notice: "Job deleted"
     else
-      redirect_to jobs_path, notice: 'Job deleted'
+      redirect_to jobs_path, notice: "Job deleted"
     end
   end
 
@@ -110,7 +110,7 @@ class JobsController < ApplicationController
   def set_job
     @job = current_user.jobs.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to jobs_path, alert: 'Job not found'
+    redirect_to jobs_path, alert: "Job not found"
   end
 
   def job_params

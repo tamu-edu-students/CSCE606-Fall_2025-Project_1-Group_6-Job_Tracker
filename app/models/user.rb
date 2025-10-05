@@ -8,11 +8,11 @@ class User < ApplicationRecord
 
   # Phone number must be valid and present
   validates :phone, presence: true,
-            format: { with: /\A\+?\d{10,15}\z/, message: 'must be a valid phone number (10-15 digits, optional +)' }
+            format: { with: /\A\+?\d{10,15}\z/, message: "must be a valid phone number (10-15 digits, optional +)" }
 
   # Email must be present and valid format
   validates :email, presence: true,
-            format: { with: URI::MailTo::EMAIL_REGEXP, message: 'must be a valid email address' }
+            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
 
   # Password complexity validation
   validate :password_complexity
@@ -39,7 +39,7 @@ class User < ApplicationRecord
     failed = complexity_requirements.map { |msg, regex| msg unless password.match?(regex) }.compact
 
     if password.length < 8
-      errors.add :password, 'must be at least 8 characters long'
+      errors.add :password, "must be at least 8 characters long"
     end
 
     if failed.any?
