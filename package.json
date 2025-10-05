@@ -4,6 +4,7 @@
     "jasmine-core": "^5.11.0"
   },
   "scripts": {
-    "test:jasmine": "CHROME_BIN=$(which google-chrome-stable) jasmine-browser-runner runSpecs --browser=chrome --capabilities.chromeOptions.args='[\"--headless=new\",\"--no-sandbox\",\"--disable-gpu\",\"--disable-dev-shm-usage\",\"--user-data-dir=/tmp/chrome-profile-$(date +%s%N)\"]'"
+    "test:js": "jasmine-browser-runner runSpecs",
+    "test:jasmine": "export TMP_PROFILE=$(mktemp -d) && CHROME_BIN=$(which google-chrome-stable) jasmine-browser-runner runSpecs --browser=chrome --capabilities.chromeOptions.args=\"['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--user-data-dir=$TMP_PROFILE']\""
   }
 }
