@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   get "my_jobs", to: "jobs#index", as: "my_jobs"
 
-  resources :companies, only: [:index, :show, :new, :create]
+  resources :companies, only: [ :index, :show, :new, :create ]
 
   resources :jobs do
     member do
