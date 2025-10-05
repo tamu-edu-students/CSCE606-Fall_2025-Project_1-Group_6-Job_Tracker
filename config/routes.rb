@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   get "personal_info", to: "dashboard#personal_info"
   get "up" => "rails/health#show", as: :rails_health_check
   get "my_jobs", to: "jobs#index", as: "my_jobs"
-  get "my_jobs", to: "jobs#index", as: "my_jobs"
 
   resources :companies, only: [:index, :show, :new, :create]
 
@@ -16,7 +15,7 @@ Rails.application.routes.draw do
       patch :update_status
     end
   end
-end
+
   resources :jobs
   resources :jobs, only: [ :index ]
   resources :companies, only: [ :index, :show, :new, :create ]

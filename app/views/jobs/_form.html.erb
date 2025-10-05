@@ -1,62 +1,63 @@
-<%= form_with model: job, local: true do |form| %>
-  <% if job.errors.any? %>
-    <div class="alert alert-danger">
-      <h4 class="alert-heading"><%= pluralize(job.errors.count, "error") %> prevented this job from being saved:</h4>
-      <ul class="mb-0">
-        <% job.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="form-panel p-3 p-md-4">
+  <%= form_with model: job, local: true do |form| %>
+    <% if job.errors.any? %>
+      <div class="alert alert-danger">
+        <h4 class="alert-heading"><%= pluralize(job.errors.count, "error") %> prevented this from being saved:</h4>
+        <ul class="mb-0">
+          <% job.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <div class="card mb-3">
-    <div class="card-body">
+    <fieldset class="mb-4">
       <div class="mb-3">
-        <%= form.label :title, class: 'form-label' %>
-        <%= form.text_field :title, class: 'form-control' %>
+        <%= form.label :title, class: 'form-label fw-bold' %>
+        <%= form.text_field :title, class: 'form-control', placeholder: 'e.g., Senior Frontend Developer' %>
       </div>
 
       <div class="mb-3">
-        <%= form.label :company_id, 'Company', class: 'form-label' %>
+        <%= form.label :company_id, 'Company', class: 'form-label fw-bold' %>
         <%= form.collection_select :company_id, Company.all, :id, :name, { prompt: 'Select Company' }, { class: 'form-select' } %>
         <div class="mt-2">
-          <%= link_to 'Add New Company', new_company_path(return_to: 'jobs_new'), class: 'btn btn-link p-0' %>
+          <%= link_to 'Add New Company', new_company_path(return_to: 'jobs_new'), class: 'btn btn-sm btn-outline-secondary' %>
         </div>
       </div>
 
       <div class="mb-3">
-        <%= form.label :link, class: 'form-label' %>
-        <%= form.url_field :link, class: 'form-control' %>
+        <%= form.label :link, 'Job Posting Link', class: 'form-label fw-bold' %>
+        <%= form.url_field :link, class: 'form-control', placeholder: 'https://...' %>
+        <div class="form-text">The URL to the official job posting.</div>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-3">
-          <%= form.label :deadline, class: 'form-label' %>
+          <%= form.label :deadline, class: 'form-label fw-bold' %>
           <%= form.date_field :deadline, class: 'form-control' %>
         </div>
         <div class="col-md-6 mb-3">
-          <%= form.label :status, class: 'form-label' %>
+          <%= form.label :status, class: 'form-label fw-bold' %>
           <%= form.select :status, options_for_select([
             ['Applied', 'applied'],
-            ['Interview Scheduled', 'interview'],
+            ['Interview', 'interview'],
             ['Rejected', 'rejected'],
-            ['Offer Received', 'offer']
+            ['Offer', 'offer']
           ], job.status), { prompt: 'Select Status' }, { class: 'form-select' } %>
         </div>
       </div>
+    </fieldset>
 
+    <fieldset class="mb-3">
       <div class="mb-3">
-        <%= form.label :notes, class: 'form-label' %>
-        <%= form.text_area :notes, rows: 4, class: 'form-control' %>
+        <%= form.label :notes, class: 'form-label fw-bold' %>
+        <%= form.text_area :notes, rows: 4, class: 'form-control', placeholder: 'Add any notes, contacts, or details here...' %>
       </div>
+    </fieldset>
 
-      <div class="d-flex align-items-center">
-        <%= form.submit class: 'btn btn-primary' %>
-        <%= link_to 'Back',
-    (params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')) ? dashboard_path : jobs_path,
-    class: 'btn btn-secondary ms-2' %>
-      </div>
+    <div class="d-flex justify-content-end border-top pt-3 mt-4">
+      <%= link_to 'Back', (params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')) ? dashboard_path : jobs_path, class: 'btn btn-secondary me-2' %>
+      <%= form.submit "Add Job", class: 'btn btn-primary' %>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
