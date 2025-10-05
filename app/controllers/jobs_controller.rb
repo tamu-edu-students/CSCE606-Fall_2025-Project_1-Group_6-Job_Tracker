@@ -33,8 +33,9 @@ class JobsController < ApplicationController
   end
 
   def new
-    @job = current_user.jobs.new
-  end
+  @job = current_user.jobs.new
+  @companies = Company.all
+end
 
   def create
     # Build job associated with the signed-in user only.
@@ -67,7 +68,11 @@ class JobsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+  @job = current_user.jobs.find(params[:id])
+  @companies = Company.all
+end
+
 
   def update
     # parse deadline similar to create
@@ -104,6 +109,16 @@ class JobsController < ApplicationController
       redirect_to jobs_path, notice: "Job deleted"
     end
   end
+
+  def update_status
+    @job = current_user.jobs.find(params[:id])
+    if @job.update(status: params[:job][:status])
+      redirect_to jobs_path, notice: "Status updated successfully."
+    else
+      redirect_to jobs_path, alert: "Failed to update status."
+    end
+  end
+
 
   private
 

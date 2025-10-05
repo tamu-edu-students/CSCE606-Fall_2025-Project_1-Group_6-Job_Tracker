@@ -1,6 +1,9 @@
-<h1>Edit Job Application</h1>
+<div class="container pt-3 pb-2" style="max-width: 800px;">
+  <h1 class="page-title mb-0">Edit Job Application</h1>
+  <%= render 'form', job: @job %>
+</div>
 
-<%= render 'form', job: @job %>
-
-<%= link_to 'Show', @job %> |
-<%= link_to 'Back', dashboard_path %>
+<div class="container text-center mt-3" style="max-width: 800px;">
+  <%= link_to 'Show', @job %> |
+  <%= link_to 'Back', dashboard_path %>
+</div>
