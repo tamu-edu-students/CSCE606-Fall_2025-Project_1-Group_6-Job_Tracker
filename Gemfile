@@ -16,7 +16,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 
-gem 'devise'
+gem "devise"
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
@@ -68,13 +68,13 @@ end
 gem "jasmine-rails", "~> 0.15.0"
 
 group :production do
-  gem 'pg' # for Heroku deployment
+  gem "pg" # for Heroku deployment
 end
 
-gem 'sendgrid-ruby'
+gem "sendgrid-ruby"
 
 group :development, :test do
-  gem 'sqlite3'
+  gem "sqlite3"
   gem "rspec-rails", "~> 8.0"
   gem "cucumber-rails", "~> 4.0", require: nil
   gem "database_cleaner-active_record", "~> 2.2"

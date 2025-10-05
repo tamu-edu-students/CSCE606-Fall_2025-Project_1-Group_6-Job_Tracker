@@ -82,19 +82,19 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
 
-  config.action_mailer.default_url_options = { host: 'job-tracker-g6-ea96d4f297d7.herokuapp.com', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: "job-tracker-g6-ea96d4f297d7.herokuapp.com", protocol: "https" }
 
   # SendGrid SMTP
-  config.action_mailer.default_options = { from: 'shmishra@tamu.edu' }
+  config.action_mailer.default_options = { from: "shmishra@tamu.edu" }
   config.action_mailer.smtp_settings = {
-    user_name: 'apikey',
-    password: ENV['SENDGRID_API_KEY'],
-    domain: 'tamu.edu',
-    address: 'smtp.sendgrid.net',
+    user_name: "apikey",
+    password: ENV["SENDGRID_API_KEY"],
+    domain: "tamu.edu",
+    address: "smtp.sendgrid.net",
     port: 587,
     authentication: :plain,
     enable_starttls_auto: true,
-    openssl_verify_mode: 'peer'
+    openssl_verify_mode: "peer"
   }
 
 
