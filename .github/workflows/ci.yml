@@ -113,7 +113,7 @@ jobs:
       - name: Run Cucumber features
         env:
           RAILS_ENV: test
-        run: bin/cucumber --format progress
+        run: bundle exec cucumber --format progress
 
   jasmine:
     runs-on: ubuntu-latest

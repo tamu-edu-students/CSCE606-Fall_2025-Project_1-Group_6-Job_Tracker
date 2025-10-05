@@ -1,12 +1,12 @@
 require "active_support/core_ext/integer/time"
 
-require 'openssl'
+require "openssl"
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 Rails.application.configure do
   # Configure 'rails notes' to inspect Cucumber files
-  config.annotations.register_directories('features')
-  config.annotations.register_extensions('feature') { |tag| /#\s*(#{tag}):?\s*(.*)$/ }
+  config.annotations.register_directories("features")
+  config.annotations.register_extensions("feature") { |tag| /#\s*(#{tag}):?\s*(.*)$/ }
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -81,18 +81,18 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
 
   # Dev URLs
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000, protocol: 'http' }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "http" }
 
   # SendGrid SMTP
-  config.action_mailer.default_options = { from: 'shmishra@tamu.edu' }
+  config.action_mailer.default_options = { from: "shmishra@tamu.edu" }
   config.action_mailer.smtp_settings = {
-    user_name: 'apikey',
+    user_name: "apikey",
     password: Rails.application.credentials.dig(:sendgrid, :api_key),
-    domain: 'tamu.edu',
-    address: 'smtp.sendgrid.net',
+    domain: "tamu.edu",
+    address: "smtp.sendgrid.net",
     port: 587,
     authentication: :plain,
     enable_starttls_auto: true,
-    openssl_verify_mode: 'none'
+    openssl_verify_mode: "none"
   }
 end

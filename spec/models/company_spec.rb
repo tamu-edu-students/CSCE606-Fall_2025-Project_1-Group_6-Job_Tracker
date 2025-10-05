@@ -12,5 +12,4 @@ RSpec.describe Company, type: :model do
     expect(company).not_to be_valid
     expect(company.errors[:website]).to include("can't be blank")
   end
-
 end
