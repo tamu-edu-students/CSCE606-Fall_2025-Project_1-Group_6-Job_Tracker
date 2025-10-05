@@ -1,46 +1,27 @@
-<table class="table table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th>
-        <%= link_to "Title #{sort_indicator("title", params[:sort], params[:direction])}".html_safe,
-                    jobs_path(sort: "title", direction: next_direction("title", params[:sort], params[:direction])),
-                    data: { turbo_frame: "jobs_table" } %>
-      </th>
-      <th>
-        <%= link_to "Company #{sort_indicator("company", params[:sort], params[:direction])}".html_safe,
-                    jobs_path(sort: "company", direction: next_direction("company", params[:sort], params[:direction])),
-                    data: { turbo_frame: "jobs_table" } %>
-      </th>
-      <th>
-        <%= link_to "Status #{sort_indicator("status", params[:sort], params[:direction])}".html_safe,
-                    jobs_path(sort: "status", direction: next_direction("status", params[:sort], params[:direction])),
-                    data: { turbo_frame: "jobs_table" } %>
-      </th>
-      <th>
-        <%= link_to "Deadline #{sort_indicator("deadline", params[:sort], params[:direction])}".html_safe,
-                    jobs_path(sort: "deadline", direction: next_direction("deadline", params[:sort], params[:direction])),
-                    data: { turbo_frame: "jobs_table" } %>
-      </th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% jobs.each do |job| %>
-      <tr>
-        <td><%= link_to job.title, job_path(job) %></td>
-        <td><%= job.company&.name %></td>
-        <td><%= job.status %></td>
-        <td><%= job.deadline %></td>
-        <td>
-          <%= link_to 'Edit', edit_job_path(job), class: 'btn btn-sm btn-secondary' %>
-          <%= link_to 'Delete', job_path(job),
-                data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
-                class: 'btn btn-sm btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<% if jobs.empty? %>
+<div class="mb-3" data-controller="job-search">
+  <div class="input-group">
+    <input type="text" data-job-search-target="input" class="form-control" placeholder="Search jobs by title or company...">
+    <button type="button" data-action="click->job-search#search" class="btn btn-primary">Search</button>
+  </div>
+</div>
+
+<% if @jobs.empty? %>
   <p class="text-center">You have no job applications yet. Click the button above to add one!</p>
+<% else %>
+  <div class="table-responsive">
+    <table class="table table-striped" id="dashboard-jobs-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Company</th>
+          <th>Status</th>
+          <th>Deadline</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+        <tbody>
+        <%= render partial: "rows", locals: { jobs: @jobs } %>
+      </tbody>
+    </table>
+  </div>
 <% end %>

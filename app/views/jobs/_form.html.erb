@@ -53,7 +53,9 @@
 
       <div class="d-flex align-items-center">
         <%= form.submit class: 'btn btn-primary' %>
-        <%= link_to 'Back', dashboard_path, class: 'btn btn-secondary ms-2' %>
+        <%= link_to 'Back',
+    (params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')) ? dashboard_path : jobs_path,
+    class: 'btn btn-secondary ms-2' %>
       </div>
     </div>
   </div>

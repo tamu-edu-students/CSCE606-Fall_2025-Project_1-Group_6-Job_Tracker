@@ -59,36 +59,3 @@
     </div>
   </div>
 </div>
-
-
-<h2>My Job Applications</h2>
-<%= link_to 'New Job Application', new_job_path, class: 'btn btn-primary' %>
-
-<div class="mb-3" data-controller="job-search">
-  <div class="input-group">
-    <input type="text" data-job-search-target="input" class="form-control" placeholder="Search jobs by title or company...">
-    <button type="button" data-action="click->job-search#search" class="btn btn-primary">Search</button>
-  </div>
-</div>
-
-<% if @jobs.empty? %>
-  <p class="text-center">You have no job applications yet. Click the button above to add one!</p>
-<% else %>
-  <div class="table-responsive">
-    <table class="table table-striped" id="dashboard-jobs-table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Company</th>
-          <th>Status</th>
-          <th>Deadline</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-        <tbody>
-        <%= render partial: 'jobs/rows', locals: { jobs: @jobs, from: 'dashboard' } %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
-

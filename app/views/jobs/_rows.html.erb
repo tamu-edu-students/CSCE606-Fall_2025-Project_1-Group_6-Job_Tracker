@@ -9,10 +9,17 @@
       <% end %>
     </td>
   <td><%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></td>
-    <td><%= job.status %></td>
+    <td>
+      <%= form_with model: job, url: update_status_job_path(job), method: :patch, local: true do |f| %>
+        <%= f.select :status, Job.statuses.keys.map { |s| [s.titleize, s] },
+          { selected: job.status },
+          { onchange: 'this.form.submit();', class: 'form-select form-select-sm' } %>
+      <% end %>
+    </td>
+
     <td><%= job.deadline %></td>
     <td>
-      <%= link_to 'Edit', edit_job_path(job) %> |
+      <%= link_to 'Edit', edit_job_path(job, from: local_assigns[:from]) %>|
       <%= button_to 'Delete', job_path(job), method: :delete, data: { confirm: 'Are you sure?' }, form: { class: 'd-inline' }, class: 'btn btn-link p-0' %>
     </td>
   </tr>
