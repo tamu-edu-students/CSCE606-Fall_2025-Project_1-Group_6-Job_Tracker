@@ -16,7 +16,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 
-gem 'devise'
+gem "devise"
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
@@ -64,20 +64,18 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "rspec-rails", "~> 8.0", groups: [:development, :test]
+gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
 
-gem "cucumber-rails", "~> 4.0", groups: [:development, :test], require: nil
+gem "cucumber-rails", "~> 4.0", groups: [ :development, :test ], require: nil
 
-gem "database_cleaner-active_record", "~> 2.2", groups: [:development, :test]
+gem "database_cleaner-active_record", "~> 2.2", groups: [ :development, :test ]
 
 gem "webdrivers", "~> 5.2", group: :test
 
-gem "jasmine-rails", "~> 0.15.0"
-
 group :production do
-  gem 'pg' # for Heroku deployment
+  gem "pg" # for Heroku deployment
 end
 
 group :development, :test do
-  gem 'sqlite3'
+  gem "sqlite3"
 end

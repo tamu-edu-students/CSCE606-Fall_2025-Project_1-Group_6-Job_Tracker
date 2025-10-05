@@ -8,5 +8,4 @@ class DashboardController < ApplicationController
   def personal_info
     @user = current_user
   end
-  
 end

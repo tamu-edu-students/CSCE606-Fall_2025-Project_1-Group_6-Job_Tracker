@@ -1,0 +1,25 @@
+{
+  "name": "csce606-fall_2025-project_1-group_6-job_tracker",
+  "version": "1.0.0",
+  "description": "Architecture: # Job Tracker Application Architecture",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jasmine-browser-runner runSpecs --browser=chrome",
+    "test:js": "jasmine-browser-runner runSpecs --browser=chrome"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tamu-edu-students/CSCE606-Fall_2025-Project_1-Group_6-Job_Tracker/issues"
+  },
+  "homepage": "https://github.com/tamu-edu-students/CSCE606-Fall_2025-Project_1-Group_6-Job_Tracker#readme",
+  "devDependencies": {
+    "jasmine": "^5.11.0",
+    "jasmine-browser-runner": "^3.0.0"
+  }
+}

@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show]
+  before_action :set_company, only: [ :show ]
 
   def index
     @companies = Company.all
@@ -16,7 +16,7 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     if @company.save
-      redirect_to @company, notice: 'Company was successfully created.'
+      redirect_to @company, notice: "Company was successfully created."
     else
       render :new
     end

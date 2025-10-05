@@ -72,7 +72,7 @@ jobs:
       - name: Prepare test database
         env:
           RAILS_ENV: test
-        run: bin/rails db:test:prepare
+        run: bundle exec rspec db:test:prepare
 
       - name: Run RSpec tests
         env:
@@ -113,28 +113,32 @@ jobs:
       - name: Run Cucumber features
         env:
           RAILS_ENV: test
-        run: bin/cucumber --format progress
+        run: bundle exec cucumber --format progress
 
   jasmine:
     runs-on: ubuntu-latest
     steps:
-      - name: Install packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
-            build-essential git libyaml-dev pkg-config google-chrome-stable
-
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+          node-version: 20
 
-      - name: Run Jasmine specs
-        env:
-          RAILS_ENV: test
-          CHROME_BIN: google-chrome-stable
-        run: bin/rake jasmine:ci
+      - name: Install Chrome & dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            google-chrome-stable chromium-chromedriver \
+            fonts-liberation libappindicator3-1 xdg-utils
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      # Optional: precompile Rails assets if JS depends on them
+      - name: Precompile assets
+        run: bundle exec rails assets:precompile
+
+      - name: Run Jasmine specs (Chrome headless)
+        run: npm run test:js

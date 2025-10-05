@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 
   get "jobs/index"
 
@@ -11,10 +10,9 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#index"
   get "personal_info", to: "dashboard#personal_info"
   get "up" => "rails/health#show", as: :rails_health_check
-  get 'my_jobs', to: 'jobs#index', as: 'my_jobs'
+  get "my_jobs", to: "jobs#index", as: "my_jobs"
 
   resources :jobs
-  resources :jobs, only: [:index]
-  resources :companies, only: [:index, :show, :new, :create]
+  resources :jobs, only: [ :index ]
+  resources :companies, only: [ :index, :show, :new, :create ]
 end
-
