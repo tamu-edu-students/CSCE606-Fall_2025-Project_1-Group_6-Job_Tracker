@@ -47,9 +47,7 @@ Then('I should see a job titled {string} on the jobs list') do |title|
   expect(page).to have_content(title)
 end
 
-When('I visit the jobs list') do
-  visit jobs_path
-end
+# When('I visit the jobs list') is defined later (avoid duplicate definition)
 
 When('I click Edit for the job titled {string}') do |title|
   within(:xpath, "//tr[td[contains(., '#{title}')]]") do
@@ -110,6 +108,14 @@ When('I visit the dashboard with query {string}') do |q|
   visit dashboard_path(q: q)
 end
 
+When('I visit the jobs list') do
+  visit jobs_path
+end
+
+When('I visit the jobs list with query {string}') do |q|
+  visit jobs_path(q: q)
+end
+
 When('I click the job titled {string}') do |title|
   within(:xpath, "//tr[td[contains(., '#{title}')]]") do
     click_link title
@@ -148,4 +154,12 @@ end
 
 Then('I should be on the dashboard') do
   expect(URI.parse(page.current_url).path).to eq(dashboard_path)
+end
+
+Then('I should be on the jobs list') do
+  expect(URI.parse(page.current_url).path).to eq(jobs_path)
+end
+
+Then('I should see the search input') do
+  expect(page).to have_selector('input[data-job-search-target="input"]')
 end
