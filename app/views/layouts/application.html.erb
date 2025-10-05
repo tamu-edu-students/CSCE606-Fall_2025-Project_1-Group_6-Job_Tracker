@@ -39,6 +39,11 @@
 
     <%= yield %>
 
+    <% flash.each do |key, message| %>
+      <div class="d-none" data-test="flash-message"><%= message %></div>
+    <% end %>
+
+
     <footer class="footer">
       <div class="footer-content">
         &copy; 2025 Job Tracker. All rights reserved.

@@ -51,12 +51,3 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
-
-# Enable Warden test helpers so scenarios can sign in without UI steps
-require 'warden'
-World(Warden::Test::Helpers)
-Warden.test_mode!
-
-After do
-  Warden.test_reset!
-end
