@@ -2,6 +2,8 @@ body {
   font-family: Calibri, Arial, Helvetica, sans-serif;
   background: #F9FAFB;
   color: #2D3748;
+  min-height: 100vh;
+  padding-bottom: 80px;
 }
 
  .landing-container {
@@ -181,9 +183,44 @@ body {
 }
 
 
-.info-container {
-  margin: 4rem auto;
-  max-width: 500px; 
+.info-container .edit-field {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.info-container .edit-field label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.info-container .edit-form input[type="text"],
+.info-container .edit-form input[type="email"],
+.info-container .edit-form input[type="tel"],
+.info-container .edit-form input[type="url"],
+.info-container .edit-form input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.info-container .edit-form input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
+
+.btn.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+.btn.btn-danger:hover {
+    background-color: #c82333;
 }
 
 .page-title {
@@ -196,7 +233,7 @@ body {
 .info-buttons {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* This creates the vertical space between buttons */
+  gap: 0.75rem;
   margin-top: 2rem;
 }
 
@@ -358,6 +395,6 @@ body {
 }
 
 .table thead th a {
-  color: black;            /* Sets the font color to black */
-  text-decoration: none;   /* Removes the underline from the links */
+  color: black;
+  text-decoration: none;
 }
