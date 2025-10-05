@@ -6,6 +6,15 @@
 
   <hr>
 
+  <div class="mb-3 text-center">
+    <div class="btn-group" role="group" aria-label="Status filters">
+      <%= link_to "All", jobs_path(request.query_parameters.except(:status)), class: "btn #{params[:status].blank? || params[:status] == 'all' ? 'btn-primary' : 'btn-outline-primary'}" %>
+
+      <% Job.statuses.each_key do |status| %>
+        <%= link_to status.humanize, jobs_path(request.query_parameters.merge(status: status)), class: "btn #{params[:status] == status ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <% end %>
+    </div>
+  </div>
   <div class="mb-3" data-controller="job-search">
     <%= form_with url: jobs_path, method: :get, local: true, html: { class: 'd-flex' } do |f| %>
       <div class="input-group w-100">
@@ -18,36 +27,36 @@
   <% if @jobs.any? %>
     <table class="table table-hover" id="jobs-table">
       <thead class="thead-dark">
-        <tr>
-          <th>
-            <%= link_to "Title #{sort_indicator("title", params[:sort], params[:direction])}".html_safe,
-                        jobs_path(sort: "title", direction: next_direction("title", params[:sort], params[:direction])),
-                        data: { turbo_frame: "jobs_table" } %>
-          </th>
-          <th>
-            <%= link_to "Company #{sort_indicator("company", params[:sort], params[:direction])}".html_safe,
-                        jobs_path(sort: "company", direction: next_direction("company", params[:sort], params[:direction])),
-                        data: { turbo_frame: "jobs_table" } %>
-          </th>
-          <th>
-            <%= link_to "Status #{sort_indicator("status", params[:sort], params[:direction])}".html_safe,
-                        jobs_path(sort: "status", direction: next_direction("status", params[:sort], params[:direction])),
-                        data: { turbo_frame: "jobs_table" } %>
-          </th>
-          <th>
-            <%= link_to "Deadline #{sort_indicator("deadline", params[:sort], params[:direction])}".html_safe,
-                        jobs_path(sort: "deadline", direction: next_direction("deadline", params[:sort], params[:direction])),
-                        data: { turbo_frame: "jobs_table" } %>
-          </th>
-          <th>Actions</th>
-        </tr>
+      <tr>
+        <th>
+          <%= link_to "Title #{sort_indicator("title", params[:sort], params[:direction])}".html_safe,
+                      jobs_path(sort: "title", direction: next_direction("title", params[:sort], params[:direction])),
+                      data: { turbo_frame: "jobs_table" } %>
+        </th>
+        <th>
+          <%= link_to "Company #{sort_indicator("company", params[:sort], params[:direction])}".html_safe,
+                      jobs_path(sort: "company", direction: next_direction("company", params[:sort], params[:direction])),
+                      data: { turbo_frame: "jobs_table" } %>
+        </th>
+        <th>
+          <%= link_to "Status #{sort_indicator("status", params[:sort], params[:direction])}".html_safe,
+                      jobs_path(sort: "status", direction: next_direction("status", params[:sort], params[:direction])),
+                      data: { turbo_frame: "jobs_table" } %>
+        </th>
+        <th>
+          <%= link_to "Deadline #{sort_indicator("deadline", params[:sort], params[:direction])}".html_safe,
+                      jobs_path(sort: "deadline", direction: next_direction("deadline", params[:sort], params[:direction])),
+                      data: { turbo_frame: "jobs_table" } %>
+        </th>
+        <th>Actions</th>
+      </tr>
       </thead>
       <tbody>
-        <%= render partial: "rows", locals: { jobs: @jobs } %>
+      <%= render partial: "rows", locals: { jobs: @jobs } %>
       </tbody>
     </table>
   <% else %>
-    <p>No job applications found.</p>
+    <p>No job applications found matching your criteria.</p>
   <% end %>
 
   <div class="mt-4 d-flex justify-content-center">

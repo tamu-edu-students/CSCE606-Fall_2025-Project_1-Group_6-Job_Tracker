@@ -8,6 +8,11 @@ class JobsController < ApplicationController
     # sorting by column/direction, and support Turbo stream responses.
     @jobs = current_user.jobs.includes(:company)
 
+    # block to filter jobs by status
+    if params[:status].present? && params[:status] != 'all'
+      @jobs = @jobs.where(status: params[:status])
+    end
+
     # Server-side search fallback for non-JS clients: filter by q param
     if params[:q].present?
       q = "%#{params[:q].to_s.downcase}%"
