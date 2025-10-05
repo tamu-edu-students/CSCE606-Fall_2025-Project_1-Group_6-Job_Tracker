@@ -5,6 +5,6 @@
   },
   "scripts": {
     "test:js": "jasmine-browser-runner runSpecs",
-    "test:jasmine": "jasmine-browser-runner runSpecs browser=chrome --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu"  
+    "test:jasmine": "jasmine-browser-runner runSpecs --browser=chrome"  
   }
 }
