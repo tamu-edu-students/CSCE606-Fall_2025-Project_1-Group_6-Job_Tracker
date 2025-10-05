@@ -24,7 +24,13 @@
 
   <div class="actions">
     <%= form.submit %>
+    <%# Preserve return_to so the create action can redirect back to new_job_path %>
+    <%= hidden_field_tag :return_to, params[:return_to] if params[:return_to].present? %>
   </div>
 <% end %>
 
-<%= link_to 'Back', companies_path %>
+<%= if params[:return_to] == 'jobs_new'
+      link_to 'Back', new_job_path
+    else
+      link_to 'Back', companies_path
+    end %>

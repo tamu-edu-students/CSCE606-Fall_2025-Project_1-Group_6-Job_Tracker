@@ -1,7 +1,7 @@
 <% (jobs || []).each do |job| %>
   <tr>
     <td><%= link_to job.title, job_path(job) %></td>
-    <td><%= job.company&.name %></td>
+  <td><%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></td>
     <td><%= job.status %></td>
     <td><%= job.deadline %></td>
     <td>

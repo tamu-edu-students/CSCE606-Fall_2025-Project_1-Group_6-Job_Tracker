@@ -13,7 +13,7 @@
             <div class="card mb-3 job-card applied">
               <div class="card-body">
                 <h5><%= job.title %></h5>
-                <p><strong>Company:</strong> <%= job.company&.name %></p>
+                <p><strong>Company:</strong> <%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></p>
               </div>
             </div>
           <% end %>
@@ -25,7 +25,7 @@
             <div class="card mb-3 job-card interview">
               <div class="card-body">
                 <h5><%= job.title %></h5>
-                <p><strong>Company:</strong> <%= job.company&.name %></p>
+                <p><strong>Company:</strong> <%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></p>
               </div>
             </div>
           <% end %>
@@ -37,7 +37,7 @@
             <div class="card mb-3 job-card offer">
               <div class="card-body">
                 <h5><%= job.title %></h5>
-                <p><strong>Company:</strong> <%= job.company&.name %></p>
+                <p><strong>Company:</strong> <%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></p>
               </div>
             </div>
           <% end %>
@@ -49,7 +49,7 @@
             <div class="card mb-3 job-card rejected">
               <div class="card-body">
                 <h5><%= job.title %></h5>
-                <p><strong>Company:</strong> <%= job.company&.name %></p>
+                <p><strong>Company:</strong> <%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></p>
               </div>
             </div>
           <% end %>

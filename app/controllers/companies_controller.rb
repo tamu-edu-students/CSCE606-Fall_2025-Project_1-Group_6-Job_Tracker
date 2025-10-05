@@ -17,7 +17,13 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     if @company.save
-      redirect_to companies_path, notice: 'Company created successfully'
+      # If the company was created from the jobs new flow, return to the
+      # job creation page so the user can select the new company and finish.
+      if params[:return_to] == 'jobs_new' || (request.referer || '').include?('/jobs/new')
+        redirect_to new_job_path, notice: 'Company created successfully'
+      else
+        redirect_to companies_path, notice: 'Company created successfully'
+      end
     else
       render :new, status: :unprocessable_entity
     end

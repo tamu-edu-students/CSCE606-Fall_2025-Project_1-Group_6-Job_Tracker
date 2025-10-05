@@ -13,8 +13,8 @@ RSpec.describe 'Jobs CRUD', type: :request do
   end
 
   it 'creates a job with valid attributes' do
-    post jobs_path, params: { job: { title: 'CreateMe', user_id: user.id, company_id: company.id } }
-    expect(response).to redirect_to(jobs_path)
+  post jobs_path, params: { job: { title: 'CreateMe', user_id: user.id, company_id: company.id } }
+  expect(response).to redirect_to(dashboard_path)
     expect(Job.find_by(title: 'CreateMe')).not_to be_nil
   end
 
@@ -51,15 +51,15 @@ RSpec.describe 'Jobs CRUD', type: :request do
 
   it 'updates a job' do
     job = Job.create!(title: 'Old', user: user, company: company)
-    patch job_path(job), params: { job: { title: 'Updated' } }
-    expect(response).to redirect_to(jobs_path)
+  patch job_path(job), params: { job: { title: 'Updated' }, from: 'dashboard' }
+  expect(response).to redirect_to(dashboard_path)
     expect(job.reload.title).to eq('Updated')
   end
 
   it 'deletes a job' do
     job = Job.create!(title: 'Bye', user: user, company: company)
-    delete job_path(job)
-    expect(response).to redirect_to(jobs_path)
+  delete job_path(job), params: { from: 'dashboard' }
+  expect(response).to redirect_to(dashboard_path)
     expect(Job.find_by(id: job.id)).to be_nil
   end
 end
