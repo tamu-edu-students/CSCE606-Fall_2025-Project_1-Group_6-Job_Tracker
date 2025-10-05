@@ -120,11 +120,13 @@ This project provides a small Job Tracker with the following user-facing feature
   - Routes: GET /jobs (index), GET /jobs/:id (show), GET /jobs/new, POST /jobs, GET /jobs/:id/edit, PATCH /jobs/:id, DELETE /jobs/:id
   - Redirects: creating a job currently redirects to the dashboard so users see new entries in context; editing/deleting will return to the dashboard if the action was initiated from the dashboard (tracked via params[:from] or referer), otherwise it returns to the jobs list (`jobs_path`).
 - Search bar: the jobs list (`/jobs`) contains the search input (client-side filtering with Stimulus for live UI filtering). The search input is present for non-JS clients as well.
+- Search bar: the jobs list (`/jobs`) contains the search input. By default the page uses client-side filtering (Stimulus) for instant, in-browser filtering. A non-JS fallback is provided: the search is also implemented as a GET form that submits a `q` query parameter to `GET /jobs` and the controller filters results server-side using `params[:q]` (case-insensitive, uses a left join on companies so jobs without a company are included).
 - Company CRUD: create and list companies. Companies created from the job form return the user to the new-job form (uses `return_to: 'jobs_new'` or referer detection).
 
 What lives where (important files):
 - Jobs controller and views: `app/controllers/jobs_controller.rb`, `app/views/jobs/*`.
 - Stimulus search controller: `app/javascript/controllers/job_search_controller.js` (client-side filtering of `#jobs-table`).
+ - Stimulus search controller: `app/javascript/controllers/job_search_controller.js` (client-side filtering of `#jobs-table`). The Stimulus controller now prevents the GET form from performing a full-page submit when JavaScript is enabled (so JS clients get instant filtering while non-JS clients use the server-side `q` fallback).
 - Companies controller and views: `app/controllers/companies_controller.rb`, `app/views/companies/*`.
 
 Test coverage (what we ran locally)
@@ -135,7 +137,10 @@ Test coverage (what we ran locally)
     - Key cases: create with valid attrs redirects and persists; create with nil title or company or malformed deadline returns 422 and does not persist; update/delete when `from: 'dashboard'` redirect to dashboard.
     - Acceptance: response status and database state match expectations (redirects, 422 error pages, persisted records).
   - `spec/controllers/jobs_controller_spec.rb` (controller → request smoke tests) — basic sanity checks for REST endpoints.
+    - `spec/requests/jobs_request_spec.rb` — server-side search request specs (new): verifies `GET /jobs?q=...` filters results by job title and by company (and includes jobs when matching title even if company absent behavior is supported by left_joins).
   - `spec/system/*_back_spec.rb` — system specs that verify the Back navigation behavior from the jobs/new/edit/show flows (Back now returns to jobs list when opened from jobs list; when opened from dashboard the behavior still returns to dashboard). These tests drive the UI via Capybara rack_test.
+
+    - Cucumber: new scenario `features/search.feature` — "Search form submits and filters results (non-JS)" which exercises the GET form submit behavior (non-JS) and asserts filtered results.
 
 - RSpec (company-focused)
   - `spec/models/company_spec.rb` — validation tests for presence of name and website.
@@ -190,7 +195,7 @@ If you'd like, I can add the high-priority missing specs now (ownership + update
 - Notes for developers:
   - The client-side search is implemented with a Stimulus controller at `app/javascript/controllers/job_search_controller.js` (importmap-style). It filters table rows in the browser for small-to-moderate datasets.
   - A server-side search endpoint also exists (`GET /jobs/search` -> `JobsController#search`) as a possible fallback for large datasets or when you need pagination/search on the server. If you enable server-side search, prefer `left_joins(:company)` or equivalent to avoid errors when jobs have no associated company.
-  - If you later add server-side paging or heavy full-text search, consider using a dedicated search service (Postgres full-text, ElasticSearch, or Algolia).
+    - Server-side fallback: there is no separate `#search` action — instead `JobsController#index` accepts `params[:q]` (GET /jobs?q=...) and performs the server-side filtering. If you later add server-side paging or heavy full-text search, consider using a dedicated search service (Postgres full-text, ElasticSearch, or Algolia).
 
 - Quick user tip: visit the Dashboard, start typing in the search box (top-right of the jobs table) and watch the rows filter live. There is no delay and no network traffic for the filtering itself.
 
