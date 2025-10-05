@@ -1,7 +1,14 @@
 <% (jobs || []).each do |job| %>
   <tr>
-    <td><%= link_to job.title, job_path(job) %></td>
-    <td><%= job.company&.name %></td>
+    <%# If a 'from' local was passed (e.g. from: 'dashboard'), include it in the job link so the show page can decide where Back should go %>
+    <td>
+      <% if local_assigns[:from].present? %>
+        <%= link_to job.title, job_path(job, from: local_assigns[:from]) %>
+      <% else %>
+        <%= link_to job.title, job_path(job) %>
+      <% end %>
+    </td>
+  <td><%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></td>
     <td><%= job.status %></td>
     <td><%= job.deadline %></td>
     <td>

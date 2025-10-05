@@ -1,30 +1,39 @@
 <h1>New Company</h1>
 
-<%= form_with model: @company, local: true do |form| %>
-  <% if @company.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
-      <ul>
-        <% @company.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="card mb-3">
+  <div class="card-body">
+    <%= form_with model: @company, local: true do |form| %>
+      <% if @company.errors.any? %>
+        <div class="alert alert-danger">
+          <h4 class="alert-heading"><%= pluralize(@company.errors.count, "error") %> prevented this company from being saved:</h4>
+          <ul class="mb-0">
+            <% @company.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+      <div class="mb-3">
+        <%= form.label :name, class: 'form-label' %>
+        <%= form.text_field :name, required: true, autofocus: true, class: 'form-control' %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :website, class: 'form-label' %>
+        <%= form.text_field :website, required: true, class: 'form-control' %>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <%= form.submit 'Create Company', class: 'btn btn-primary' %>
+        <%# Preserve return_to so the create action can redirect back to new_job_path %>
+        <%= hidden_field_tag :return_to, params[:return_to] if params[:return_to].present? %>
+        <%= if params[:return_to] == 'jobs_new'
+              link_to 'Back', new_job_path, class: 'btn btn-secondary ms-2'
+            else
+              link_to 'Back', companies_path, class: 'btn btn-secondary ms-2'
+            end %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="field">
-    <%= form.label :website %>
-    <%= form.text_field :website %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-<%= link_to 'Back', companies_path %>
+</div>

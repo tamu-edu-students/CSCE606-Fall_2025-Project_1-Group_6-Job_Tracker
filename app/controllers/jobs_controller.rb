@@ -59,7 +59,9 @@ class JobsController < ApplicationController
 
     @job = current_user.jobs.new(job_params)
     if @job.save
-      redirect_to jobs_path, notice: 'Job created'
+      # After creating a job, take the user to their dashboard so they see the
+      # newly created entry in context.
+      redirect_to dashboard_path, notice: 'Job created'
     else
       render :new, status: :unprocessable_entity
     end
@@ -81,7 +83,13 @@ class JobsController < ApplicationController
     end
 
     if @job.update(job_params)
-      redirect_to jobs_path, notice: 'Job updated'
+      # If the edit started from the dashboard, send the user back there so
+      # they see the updated entry in the table. Fall back to jobs_path.
+      if params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')
+        redirect_to dashboard_path, notice: 'Job updated'
+      else
+        redirect_to jobs_path, notice: 'Job updated'
+      end
     else
       render :edit, status: :unprocessable_entity
     end
@@ -89,7 +97,12 @@ class JobsController < ApplicationController
 
   def destroy
     @job.destroy
-    redirect_to jobs_path, notice: 'Job deleted'
+    # If the delete was triggered from the dashboard, return there; otherwise go to jobs list.
+    if params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')
+      redirect_to dashboard_path, notice: 'Job deleted'
+    else
+      redirect_to jobs_path, notice: 'Job deleted'
+    end
   end
 
   private
