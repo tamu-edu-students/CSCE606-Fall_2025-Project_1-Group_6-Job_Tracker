@@ -1,12 +1,13 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show]
-
+  before_action :authenticate_user!
+  
   def index
     @companies = Company.all
   end
 
   def show
-    @jobs = @company.jobs.includes(:user)
+    @company = Company.find(params[:id])
+    @jobs = @company.jobs.where(user: current_user)
   end
 
   def new
@@ -16,18 +17,15 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     if @company.save
-      redirect_to @company, notice: 'Company was successfully created.'
+      redirect_to companies_path, notice: 'Company created successfully'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   private
-    def set_company
-      @company = Company.find(params[:id])
-    end
 
-    def company_params
-      params.require(:company).permit(:name, :website)
-    end
+  def company_params
+    params.require(:company).permit(:name, :website)
+  end
 end

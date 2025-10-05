@@ -110,6 +110,21 @@ Background Jobs handle async tasks (Notifications / CSV Import)
 - CI/CD ensures consistent builds and automatic deployments.
 - The architecture supports incremental development (3 increments).
 
+---
+
+## Jobs & Search
+
+- Location: the search bar is available on the Jobs list page (`/jobs`) and on the main Dashboard (`/dashboard`).
+
+- User behavior: the search performs real-time, client-side filtering of the visible jobs table as you type. It matches job title and company name (case-insensitive, partial matches supported). Results update instantly without reloading the page.
+
+- Notes for developers:
+  - The client-side search is implemented with a Stimulus controller at `app/javascript/controllers/job_search_controller.js` (importmap-style). It filters table rows in the browser for small-to-moderate datasets.
+  - A server-side search endpoint also exists (`GET /jobs/search` -> `JobsController#search`) as a possible fallback for large datasets or when you need pagination/search on the server. If you enable server-side search, prefer `left_joins(:company)` or equivalent to avoid errors when jobs have no associated company.
+  - If you later add server-side paging or heavy full-text search, consider using a dedicated search service (Postgres full-text, ElasticSearch, or Algolia).
+
+- Quick user tip: visit the Dashboard, start typing in the search box (top-right of the jobs table) and watch the rows filter live. There is no delay and no network traffic for the filtering itself.
+
 ------------------------------------------------------------------------------------------
 
 This README would normally document whatever steps are necessary to get the
