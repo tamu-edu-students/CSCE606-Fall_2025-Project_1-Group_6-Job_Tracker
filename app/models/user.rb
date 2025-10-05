@@ -22,7 +22,10 @@ class User < ApplicationRecord
 
   has_many :jobs, dependent: :destroy
 
+  has_one_attached :profile_photo
+  validate :acceptable_image
   private
+
   def password_complexity
     return if password.blank?
 
@@ -47,6 +50,16 @@ class User < ApplicationRecord
   def passwords_match
     if password != password_confirmation
       errors.add :password_confirmation, "doesn't match Password"
+    end
+  end
+
+  def acceptable_image
+    return unless profile_photo.attached?
+    unless profile_photo.content_type.in?(%w[image/jpeg image/png])
+      errors.add(:profile_photo, "must be a JPG or PNG")
+    end
+    if profile_photo.byte_size > 2.megabytes
+      errors.add(:profile_photo, "is too big (max 2MB)")
     end
   end
 end
