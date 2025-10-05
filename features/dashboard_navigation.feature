@@ -6,10 +6,10 @@ Feature: Dashboard navigation
     Given a user exists with email "dash_user@example.com"
     And I am signed in as "dash_user@example.com"
 
-  Scenario: Open job from dashboard and go back
+  Scenario: Open job from jobs list and go back
     Given a job exists titled "BackJob" for company "DashCo"
-    When I visit the dashboard
+    When I visit the jobs list
     And I click the job titled "BackJob"
     Then I should be on the job details page for "BackJob"
     When I click "Back"
-    Then I should be on the dashboard
+    Then I should be on the jobs list

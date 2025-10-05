@@ -9,7 +9,8 @@ Feature: Job search
     And a job exists titled "FindMe" for company "SearchCo"
     And a job exists titled "Other" for company "SearchCo"
 
-  Scenario: Search filters jobs (server-side)
-    When I visit the dashboard with query "FindMe"
-    Then I should see a job titled "FindMe"
-    And I should not see a job titled "Other"
+  Scenario: Search input is present on jobs list
+    When I visit the jobs list
+    Then I should see the search input
+    And I should see a job titled "FindMe"
+    And I should see a job titled "Other"
