@@ -8,6 +8,13 @@ class JobsController < ApplicationController
     # sorting by column/direction, and support Turbo stream responses.
     @jobs = current_user.jobs.includes(:company)
 
+    # Server-side search fallback for non-JS clients: filter by q param
+    if params[:q].present?
+      q = "%#{params[:q].to_s.downcase}%"
+      # use left_joins so jobs without a company are included
+      @jobs = @jobs.left_joins(:company).where("LOWER(jobs.title) LIKE :q OR LOWER(companies.name) LIKE :q", q: q)
+    end
+
     sort = params[:sort]
     direction = params[:direction] == "desc" ? :desc : :asc
 

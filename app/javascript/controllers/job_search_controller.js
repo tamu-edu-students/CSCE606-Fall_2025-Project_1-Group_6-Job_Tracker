@@ -10,6 +10,16 @@ export default class extends Controller {
     }
     console.debug('job-search controller connected')
     this.inputTarget.addEventListener("input", this.search.bind(this))
+
+    // If the input is inside a form, prevent normal submission when JS is enabled
+    const form = this.inputTarget.closest('form')
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        // Prevent full-page submit and rely on client-side filtering
+        e.preventDefault()
+        this.search()
+      })
+    }
   }
 
   search() {
