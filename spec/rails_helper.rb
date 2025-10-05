@@ -1,4 +1,5 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'factory_bot_rails'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -8,7 +9,6 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
-require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -25,6 +25,9 @@ require 'devise'
 # require only the support files necessary.
 #
 # Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
+
+# Auto-require files in spec/support so helpers are loaded
+Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
 # Ensures that the test database schema matches the current schema file.
 # If there are pending migrations it will invoke `db:test:prepare` to
@@ -68,21 +71,10 @@ RSpec.configure do |config|
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
-  # Include Devise test helpers for request specs so tests can sign in users.
-  config.include Devise::Test::IntegrationHelpers, type: :request
-  # Use Warden test helpers to log in users in request specs
-  config.include Warden::Test::Helpers
-
-  # Include Devise controller helpers for controller specs (provides `sign_in`)
-  config.include Devise::Test::ControllerHelpers, type: :controller
-
-  config.before(:suite) do
-    Warden.test_mode!
-  end
-
-  config.after(:suite) do
-    Warden.test_reset!
-  end
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  config.include FactoryBot::Syntax::Methods
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  # Also include TestLoginHelpers globally as a safety net
+  config.include TestLoginHelpers
 end

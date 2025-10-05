@@ -9,7 +9,12 @@ RSpec.describe 'Dashboard edit/back behavior', type: :system do
   let!(:company) { Company.create!(name: 'DashCo', website: 'https://dashco.example') }
   let!(:job) { Job.create!(title: 'DashJob', user: user, company: company) }
 
-  before { login_as(user, scope: :user) }
+  before do
+    visit new_user_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: 'Password1!'
+    click_button 'Log in'
+  end
 
   it 'returns to jobs list when clicking Back on the edit page' do
     visit jobs_path

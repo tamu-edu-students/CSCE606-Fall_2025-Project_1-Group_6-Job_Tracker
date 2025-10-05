@@ -5,5 +5,5 @@
 
 <div class="container text-center mt-3" style="max-width: 800px;">
   <%= link_to 'Show', @job %> |
-  <%= link_to 'Back', dashboard_path %>
+  <%= link_to 'Back', (params[:from] == 'dashboard' || (request.referer || '').include?('/dashboard')) ? dashboard_path : jobs_path %>
 </div>

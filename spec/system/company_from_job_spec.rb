@@ -7,7 +7,12 @@ RSpec.describe 'Create company from job form', type: :system do
 
   let!(:user) { User.create!(email: 'u2@example.com', password: 'Password1!', password_confirmation: 'Password1!', full_name: 'U2', phone: '+12345678902') }
 
-  before { login_as(user, scope: :user) }
+  before do
+    visit new_user_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: 'Password1!'
+    click_button 'Log in'
+  end
 
   it 'creates a company from the job form and returns to the job form' do
     visit new_job_path

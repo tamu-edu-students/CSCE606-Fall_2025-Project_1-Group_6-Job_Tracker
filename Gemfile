@@ -78,4 +78,6 @@ group :development, :test do
   gem "rspec-rails", "~> 8.0"
   gem "cucumber-rails", "~> 4.0", require: nil
   gem "database_cleaner-active_record", "~> 2.2"
+  gem "factory_bot_rails"
+  gem "faker", group: [ :development, :test ]
 end
