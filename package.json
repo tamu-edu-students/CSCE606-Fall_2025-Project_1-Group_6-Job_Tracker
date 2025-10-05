@@ -4,6 +4,6 @@
     "jasmine-core": "^5.11.0"
   },
   "scripts": {
-    "test:jasmine": "CHROME_BIN=$(which google-chrome-stable) jasmine-browser-runner runSpecs --browser=chrome --capabilities.chromeOptions.args='[\"--headless=new\",\"--no-sandbox\",\"--disable-gpu\",\"--disable-dev-shm-usage\"]'"
+    "test:jasmine": "CHROME_BIN=$(which google-chrome-stable) jasmine-browser-runner runSpecs --browser=chrome --capabilities.chromeOptions.args='[\"--headless=new\",\"--no-sandbox\",\"--disable-gpu\",\"--disable-dev-shm-usage\",\"--user-data-dir=/tmp/chrome-profile-$(date +%s%N)\"]'"
   }
 }
