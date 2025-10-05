@@ -9,7 +9,7 @@ class JobsController < ApplicationController
     @jobs = current_user.jobs.includes(:company)
 
     # block to filter jobs by status
-    if params[:status].present? && params[:status] != 'all'
+    if params[:status].present? && params[:status] != "all"
       @jobs = @jobs.where(status: params[:status])
     end
 
