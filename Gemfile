@@ -71,6 +71,8 @@ group :production do
   gem 'pg' # for Heroku deployment
 end
 
+gem 'sendgrid-ruby'
+
 group :development, :test do
   gem 'sqlite3'
   gem "rspec-rails", "~> 8.0"
