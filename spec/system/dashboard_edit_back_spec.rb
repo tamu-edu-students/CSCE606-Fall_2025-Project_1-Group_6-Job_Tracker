@@ -21,7 +21,9 @@ RSpec.describe 'Dashboard edit/back behavior', type: :system do
 
     expect(page).to have_current_path(edit_job_path(job))
 
-    click_link 'Back'
+    within('.card') do
+      click_link 'Back'
+    end
 
     expect(page).to have_current_path(dashboard_path)
   end

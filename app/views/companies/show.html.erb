@@ -1,31 +1,36 @@
-<h1><%= @company.name %></h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="mb-0"><%= @company.name %></h1>
+  <%= link_to 'Back to Companies', companies_path, class: 'btn btn-secondary' %>
+</div>
 
 <p><strong>Website:</strong> <%= @company.website %></p>
 
 <h2>Jobs at this Company</h2>
 <% if @jobs.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Status</th>
-        <th>Deadline</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @jobs.each do |job| %>
-        <tr>
-          <td><%= link_to job.title, job_path(job) %></td>
-          <td><%= job.status %></td>
-          <td><%= job.deadline %></td>
-          <td><%= link_to 'Show', job_path(job) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @jobs.each do |job| %>
+            <tr>
+              <td><%= link_to job.title, job_path(job) %></td>
+              <td><%= job.status %></td>
+              <td><%= job.deadline %></td>
+              <td><%= link_to 'Show', job_path(job), class: 'btn btn-link p-0' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <% else %>
   <p>No jobs found for this company.</p>
 <% end %>
-
-<%= link_to 'Back to Companies', companies_path %>

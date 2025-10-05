@@ -33,10 +33,11 @@ RSpec.describe 'Create company from job form', type: :system do
 
   it 'shows validation errors when creating a company with blank name and stays on companies/new' do
     visit new_company_path(return_to: 'jobs_new')
-    fill_in 'Name', with: ''
-  click_button 'Create Company'
-
-  # On validation failure the form will re-render; ensure we see the validation message
-  expect(page).to have_content("prohibited this company from being saved")
+    within('.card') do
+      fill_in 'Name', with: ''
+      click_button 'Create Company'
+      # On validation failure the form will re-render; ensure we see the validation errors
+      expect(page).to have_content("can't be blank")
+    end
   end
 end

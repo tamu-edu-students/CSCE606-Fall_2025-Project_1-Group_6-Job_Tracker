@@ -11,7 +11,9 @@ RSpec.describe 'New Job Back button', type: :system do
   it 'returns to dashboard when clicking Back on the new job page' do
     visit new_job_path
     expect(page).to have_current_path(new_job_path)
-    click_link 'Back'
+    within('.card') do
+      click_link 'Back'
+    end
     expect(page).to have_current_path(dashboard_path)
   end
 end
