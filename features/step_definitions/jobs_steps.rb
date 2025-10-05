@@ -4,7 +4,10 @@ end
 
 Given('I am signed in as {string}') do |email|
   user = User.find_by(email: email)
-  login_as(user, scope: :user)
+  visit new_user_session_path
+  fill_in 'Email', with: user.email
+  fill_in 'Password', with: 'Password1!'
+  click_button 'Log in'
 end
 
 Given('a company exists with name {string}') do |name|

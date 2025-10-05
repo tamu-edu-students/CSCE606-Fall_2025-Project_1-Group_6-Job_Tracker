@@ -9,7 +9,12 @@ RSpec.describe 'Job show back behavior', type: :system do
   let!(:company) { Company.create!(name: 'BackCo', website: 'https://backco.example') }
   let!(:job) { Job.create!(title: 'BackJob', user: user, company: company) }
 
-  before { login_as(user, scope: :user) }
+  before do
+    visit new_user_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: 'Password1!'
+    click_button 'Log in'
+  end
 
   it 'returns to jobs list when job was opened from jobs list and Back is clicked' do
     visit jobs_path

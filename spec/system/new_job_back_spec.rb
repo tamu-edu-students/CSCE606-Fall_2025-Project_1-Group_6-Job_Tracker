@@ -6,7 +6,12 @@ RSpec.describe 'New Job Back button', type: :system do
   end
 
   let!(:user) { User.create!(email: 'u4@example.com', password: 'Password1!', password_confirmation: 'Password1!', full_name: 'U4', phone: '+12345678904') }
-  before { login_as(user, scope: :user) }
+  before do
+    visit new_user_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: 'Password1!'
+    click_button 'Log in'
+  end
 
   it 'returns to dashboard when clicking Back on the new job page' do
     visit new_job_path
