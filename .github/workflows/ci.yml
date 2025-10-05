@@ -117,8 +117,9 @@ jobs:
 
   jasmine:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Install packages
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
@@ -133,8 +134,19 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Run Jasmine specs
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: |
+          npm ci
+
+      - name: Run Jasmine specs (headless Chrome)
         env:
           RAILS_ENV: test
           CHROME_BIN: google-chrome-stable
-        run: bin/rake jasmine:ci
+        run: npm run test:jasmine
+
