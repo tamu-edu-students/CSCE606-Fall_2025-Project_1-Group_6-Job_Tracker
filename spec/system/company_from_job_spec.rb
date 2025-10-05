@@ -19,8 +19,9 @@ RSpec.describe 'Create company from job form', type: :system do
 
     expect(page).to have_current_path(new_company_path(return_to: 'jobs_new'))
 
-    fill_in 'Name', with: 'SystemCo'
-    click_button 'Create'
+  fill_in 'Name', with: 'SystemCo'
+  fill_in 'Website', with: 'https://systemco.example'
+  click_button 'Create Company'
 
     # After creating, we should be back on the job form
     expect(page).to have_current_path(new_job_path)
@@ -33,9 +34,9 @@ RSpec.describe 'Create company from job form', type: :system do
   it 'shows validation errors when creating a company with blank name and stays on companies/new' do
     visit new_company_path(return_to: 'jobs_new')
     fill_in 'Name', with: ''
-    click_button 'Create'
+  click_button 'Create Company'
 
-  # On validation failure the form will re-render; ensure we remain on the new company form
+  # On validation failure the form will re-render; ensure we see the validation message
   expect(page).to have_content("prohibited this company from being saved")
   end
 end

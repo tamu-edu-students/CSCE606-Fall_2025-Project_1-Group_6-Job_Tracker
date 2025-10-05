@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Jobs CRUD', type: :request do
   let!(:user) { User.create!(email: 'u@example.com', password: 'Password1!', password_confirmation: 'Password1!', full_name: 'U', phone: '+12345678901') }
-  let!(:company) { Company.create!(name: 'TestCo') }
+  let!(:company) { Company.create!(name: 'TestCo', website: 'https://testco.example') }
   before { login_as(user, scope: :user) }
 
   it 'lists jobs' do

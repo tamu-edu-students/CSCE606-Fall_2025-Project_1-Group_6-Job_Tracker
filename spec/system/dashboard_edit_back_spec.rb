@@ -6,7 +6,7 @@ RSpec.describe 'Dashboard edit/back behavior', type: :system do
   end
 
   let!(:user) { User.create!(email: 'u3@example.com', password: 'Password1!', password_confirmation: 'Password1!', full_name: 'U3', phone: '+12345678903') }
-  let!(:company) { Company.create!(name: 'DashCo') }
+  let!(:company) { Company.create!(name: 'DashCo', website: 'https://dashco.example') }
   let!(:job) { Job.create!(title: 'DashJob', user: user, company: company) }
 
   before { login_as(user, scope: :user) }

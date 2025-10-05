@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Job, type: :model do
   let(:user) { User.create!(email: 'jj@example.com', password: 'Password1!', password_confirmation: 'Password1!', full_name: 'J', phone: '+12345678901') }
-  let(:company) { Company.create!(name: 'Comp') }
+  let(:company) { Company.create!(name: 'Comp', website: 'https://comp.example') }
 
   it 'is valid with title, user and company' do
     job = Job.new(title: 'X', user: user, company: company)

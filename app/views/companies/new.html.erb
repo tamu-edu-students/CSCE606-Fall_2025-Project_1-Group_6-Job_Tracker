@@ -14,12 +14,12 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, required: true, autofocus: true %>
   </div>
 
   <div class="field">
     <%= form.label :website %>
-    <%= form.text_field :website %>
+    <%= form.text_field :website, required: true %>
   </div>
 
   <div class="actions">
