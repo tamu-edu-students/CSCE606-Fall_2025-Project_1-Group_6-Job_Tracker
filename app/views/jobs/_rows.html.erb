@@ -11,11 +11,16 @@
   <td><%= job.company ? link_to(job.company.name, company_path(job.company)) : '' %></td>
     <td>
       <%= form_with model: job, url: update_status_job_path(job), method: :patch, local: true do |f| %>
-        <%= f.select :status, Job.statuses.keys.map { |s| [s.titleize, s] },
-          { selected: job.status },
-          { onchange: 'this.form.submit();', class: 'form-select form-select-sm' } %>
+        <div class="d-flex align-items-center gap-2">
+          <%= f.select :status, Job.statuses.keys.map { |s| [s.titleize, s] },
+            { selected: job.status },
+            { class: 'form-select form-select-sm' } %>
+
+          <%# Use the new custom class here %>
+          <%= f.submit "Update", class: 'btn btn-custom-status-update' %>
+        </div>
       <% end %>
-    </td>
+    </td>     
 
     <td><%= job.deadline %></td>
     <td>

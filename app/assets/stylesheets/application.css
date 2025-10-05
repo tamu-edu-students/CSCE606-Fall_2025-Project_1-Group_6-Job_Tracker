@@ -432,3 +432,19 @@ body {
   width: 100%;
   border-bottom: 1px solid #e2e8f0;
 }
+
+.btn-custom-status-update {
+  padding: 0.2rem 0.5rem; 
+  font-size: 0.9rem; 
+  border-radius: 0.3rem; 
+  font-weight: 500; 
+  background-color: #0d6efd; 
+  color: #fff;
+  border: 1px solid #0d6efd;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.btn-custom-status-update:hover {
+  background-color: #0b5ed7; 
+  border-color: #0a58ca;
+}
