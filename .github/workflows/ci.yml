@@ -11,13 +11,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
@@ -26,13 +24,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
 
@@ -41,44 +37,38 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
   rspec:
     runs-on: ubuntu-latest
+    needs: [lint]         # ✅ Ensure lint passes before running tests
     steps:
       - name: Install packages
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
             build-essential git libyaml-dev pkg-config
-
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
       - name: Prepare test database
         env:
           RAILS_ENV: test
         run: bin/rails db:test:prepare
-
       - name: Run RSpec tests
         env:
           RAILS_ENV: test
         run: bin/rspec --format documentation
-
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
         if: failure()
@@ -89,27 +79,24 @@ jobs:
 
   cucumber:
     runs-on: ubuntu-latest
+    needs: [rspec]        # ✅ Runs *after* RSpec job finishes
     steps:
       - name: Install packages
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
             build-essential git libyaml-dev pkg-config
-
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
       - name: Prepare test database
         env:
           RAILS_ENV: test
         run: bin/rails db:test:prepare
-
       - name: Run Cucumber features
         env:
           RAILS_ENV: test
@@ -117,36 +104,29 @@ jobs:
 
   jasmine:
     runs-on: ubuntu-latest
-
+    needs: [cucumber]     # ✅ Runs *after* Cucumber job finishes
     steps:
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
             build-essential git libyaml-dev pkg-config google-chrome-stable
-
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-
       - name: Install npm dependencies
-        run: |
-          npm ci
-
+        run: npm ci
       - name: Run Jasmine specs (headless Chrome)
         env:
           RAILS_ENV: test
           CHROME_BIN: google-chrome-stable
         run: npm run test:jasmine
-
