@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       get  :export
       post :import
     end
-  end 
+  end
 
   resources :jobs, only: [ :index ]
   resources :companies, only: [ :index, :show, :new, :create ]

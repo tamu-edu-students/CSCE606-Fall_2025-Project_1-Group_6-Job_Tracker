@@ -10,7 +10,7 @@ Feature: Job management
   Scenario: Create a job
     Given a company exists with name "CukeCo"
     When I visit the new job page
-    And I fill in the new job form with title "CukeJob", company "CukeCo"
+    And I fill in the new job form with title "CukeJob", company "Cuke Co"
     And I submit the job form
     Then I should see a job titled "CukeJob" on the jobs list
 
