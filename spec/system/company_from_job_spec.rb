@@ -33,7 +33,7 @@ RSpec.describe 'Create company from job form', type: :system do
 
   # The company select should include the newly created company
   expect(page).to have_select('Company')
-  expect(find_field('Company').all('option').map(&:text)).to include('SystemCo')
+  expect(find_field('Company').all('option').map(&:text)).to include('System Co')
   end
 
   it 'shows validation errors when creating a company with blank name and stays on companies/new' do
