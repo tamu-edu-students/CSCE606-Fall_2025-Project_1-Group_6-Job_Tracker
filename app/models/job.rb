@@ -13,8 +13,18 @@ class Job < ApplicationRecord
   scope :with_status, ->(status) { where("LOWER(status) = ?", status.to_s.downcase) }
 
   after_create :create_deadline_reminder
+  after_update_commit :sync_reminders_if_status_changed
 
   private
+
+  def sync_reminders_if_status_changed
+    # Only run if the job’s status actually changed
+    return unless saved_change_to_status?
+
+    reminders.find_each do |reminder|
+      reminder.save!  # triggers before_save validations and auto-disable logic
+    end
+  end
 
   def deadline_not_too_far
     return if deadline.blank?

@@ -11,6 +11,7 @@ class Reminder < ApplicationRecord
   validate  :interview_after_deadline
   validate  :reminder_not_in_past
   validate  :single_deadline_per_job
+  validate  :enforce_status_based_rules
 
   # -------------------
   # SCOPES
@@ -22,7 +23,11 @@ class Reminder < ApplicationRecord
       .order(:reminder_time)
   }
 
+  # -------------------
+  # CALLBACKS
+  # -------------------
   after_create_commit :send_creation_email
+  before_save :auto_disable_based_on_job_status
 
   # -------------------
   # INSTANCE METHODS
@@ -33,41 +38,35 @@ class Reminder < ApplicationRecord
 
   private
 
-  # ✅ Validation: reminder's job must belong to same user
+  # ✅ Reminder's job must belong to same user
   def job_belongs_to_user
     return if job.nil?
-    if job.user_id != user_id
-      errors.add(:job_id, "must belong to the same user as the reminder")
-    end
+    errors.add(:job_id, "must belong to the same user as the reminder") if job.user_id != user_id
   end
 
-  # ✅ Validation: reminders cannot be set in the past
+  # ✅ Cannot schedule reminders in the past
   def reminder_not_in_past
     return if reminder_time.blank?
-    if reminder_time < Time.zone.now
-      errors.add(:reminder_time, "cannot be set in the past")
-    end
+    errors.add(:reminder_time, "cannot be set in the past") if reminder_time < Time.zone.now
   end
 
-  # ✅ Validation: interview reminder must be after deadline reminder AND current time
+  # ✅ Interview reminder must be after deadline reminder
   def interview_after_deadline
     return unless reminder_type == "interview"
     return if reminder_time.blank?
 
-    # Ensure interview reminder isn't before today
     if reminder_time < Time.zone.now
       errors.add(:reminder_time, "cannot be before the current time")
       return
     end
 
-    # Ensure interview reminder isn't before the deadline reminder
     deadline_reminder = Reminder.find_by(job_id: job_id, reminder_type: "deadline")
     if deadline_reminder && reminder_time < deadline_reminder.reminder_time
       errors.add(:reminder_time, "cannot be before the application deadline reminder")
     end
   end
 
-  # ✅ NEW Validation: only one deadline reminder per job per user
+  # ✅ Only one deadline reminder per job per user
   def single_deadline_per_job
     return unless reminder_type == "deadline"
 
@@ -77,6 +76,36 @@ class Reminder < ApplicationRecord
     end
   end
 
+  # ✅ Disable reminders automatically based on job status
+  def auto_disable_based_on_job_status
+    return if job.blank?
+
+    case reminder_type
+    when "deadline"
+      # Disable if job not in 'to_apply'
+      self.disabled = true unless job.status == "to_apply"
+    when "interview"
+      # Disable if job in 'offer' or 'rejected'
+      self.disabled = true if %w[offer rejected].include?(job.status)
+    end
+  end
+
+  # ✅ Prevent enabling invalid reminders manually
+  def enforce_status_based_rules
+    return if job.blank?
+
+    if reminder_type == "deadline"
+      if job.status != "to_apply" && disabled == false
+        errors.add(:base, "Cannot enable deadline reminder unless job is in 'To Apply' status")
+      end
+    elsif reminder_type == "interview"
+      if %w[offer rejected].include?(job.status) && disabled == false
+        errors.add(:base, "Cannot enable interview reminder when job is in Offer or Rejected status")
+      end
+    end
+  end
+
+  # ✅ Send email asynchronously
   def send_creation_email
     ReminderMailer.reminder_email(self).deliver_later
   end
