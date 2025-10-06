@@ -46,6 +46,12 @@ This Markdown document describes the **monolithic architecture** and flow of the
                                 |    (Email, Slack API)|
                                 +----------------------+
 ```
+
+## Class Diagram
+
+Below is a simplified class diagram showing the main models and relationships used in the application. (Rendered SVG included in the repo.)
+
+![Class diagram](docs/class_diagram.svg)
 ---
 
 ## 2. Components

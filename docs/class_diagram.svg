@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="520" viewBox="0 0 860 520">
+  <style>
+    .box { fill:#fff; stroke:#222; stroke-width:2 }
+    .title { font: bold 14px sans-serif; }
+    .attr { font: 12px monospace; }
+    .note { font: 12px sans-serif; fill:#333 }
+    .arrow { stroke:#222; stroke-width:1.5; fill:none; marker-end: url(#arrowhead) }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#222" />
+    </marker>
+  </defs>
+
+  <!-- User box -->
+  <g transform="translate(40,40)">
+    <rect class="box" width="220" height="140" rx="6" />
+    <text x="12" y="24" class="title">User</text>
+    <text x="12" y="44" class="attr">+ full_name : String</text>
+    <text x="12" y="62" class="attr">+ email : String</text>
+    <text x="12" y="80" class="attr">+ phone : String</text>
+    <text x="12" y="98" class="attr">+ location : String</text>
+    <text x="12" y="116" class="attr">+ linkedin_url : String</text>
+    <text x="12" y="134" class="attr">+ resume_url : String</text>
+  </g>
+
+  <!-- Company box -->
+  <g transform="translate(300,320)">
+    <rect class="box" width="200" height="80" rx="6" />
+    <text x="12" y="24" class="title">Company</text>
+    <text x="12" y="44" class="attr">+ name : String</text>
+    <text x="12" y="62" class="attr">+ website : String</text>
+  </g>
+
+  <!-- Job box (center) -->
+  <g transform="translate(300,120)">
+    <rect class="box" width="300" height="180" rx="6" />
+    <text x="12" y="24" class="title">Job</text>
+    <text x="12" y="44" class="attr">+ user_id : Integer</text>
+    <text x="12" y="62" class="attr">+ company_id : Integer</text>
+    <text x="12" y="80" class="attr">+ title : String</text>
+    <text x="12" y="98" class="attr">+ notes : String</text>
+    <text x="12" y="116" class="attr">+ deadline : Date</text>
+    <text x="12" y="134" class="attr">+ status : JobStatus</text>
+    <text x="12" y="156" class="attr">+ with_status(status) : Job[]</text>
+  </g>
+
+  <!-- Reminder box -->
+  <g transform="translate(640,40)">
+    <rect class="box" width="200" height="160" rx="6" />
+    <text x="12" y="24" class="title">Reminder</text>
+    <text x="12" y="44" class="attr">+ job_id : Integer</text>
+    <text x="12" y="62" class="attr">+ user_id : Integer</text>
+    <text x="12" y="80" class="attr">+ reminder_type : String</text>
+    <text x="12" y="98" class="attr">+ reminder_time : DateTime</text>
+    <text x="12" y="116" class="attr">+ disabled : Boolean</text>
+    <text x="12" y="134" class="attr">+ notified : Boolean</text>
+  </g>
+
+  <!-- Enum box -->
+  <g transform="translate(640,240)">
+    <rect class="box" width="180" height="110" rx="6" />
+    <text x="12" y="24" class="title">JobStatus (enum)</text>
+    <text x="12" y="48" class="attr">+ to_apply</text>
+    <text x="12" y="68" class="attr">+ applied</text>
+    <text x="12" y="88" class="attr">+ interview</text>
+    <text x="12" y="108" class="attr">+ offer</text>
+    <text x="12" y="128" class="attr">+ rejected</text>
+  </g>
+
+  <!-- Associations arrows -->
+  <!-- User -> Job (1..* ) -->
+  <path class="arrow" d="M 160 120 L 260 120" marker-end="url(#arrowhead)" />
+  <text x="200" y="110" class="note">1..*</text>
+
+  <!-- Job -> Company -->
+  <path class="arrow" d="M 600 200 L 700 200" marker-end="url(#arrowhead)" />
+  <text x="640" y="190" class="note">* has</text>
+
+  <!-- Job -> Reminder (has many) -->
+  <path class="arrow" d="M 560 180 L 680 140" marker-end="url(#arrowhead)" />
+  <text x="520" y="160" class="note">has many</text>
+
+  <!-- Job -> JobStatus (uses) -->
+  <path class="arrow" d="M 620 240 L 740 240" marker-end="url(#arrowhead)" />
+  <text x="680" y="230" class="note">uses</text>
+
+  <!-- Job -> User label (belongs_to) -->
+  <text x="120" y="170" class="note">belongs_to</text>
+  <text x="420" y="310" class="note">belongs_to</text>
+
+  <!-- Caption -->
+  <text x="40" y="480" class="note">Class diagram: User, Job, Company, Reminder and JobStatus (simplified representation of models and key attributes)</text>
+</svg>
