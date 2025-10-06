@@ -79,5 +79,4 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
   # Also include TestLoginHelpers globally as a safety net
   config.include TestLoginHelpers
-
 end

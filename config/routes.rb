@@ -20,6 +20,4 @@ Rails.application.routes.draw do
   resources :jobs
   resources :jobs, only: [ :index ]
   resources :companies, only: [ :index, :show, :new, :create ]
-
-
 end
