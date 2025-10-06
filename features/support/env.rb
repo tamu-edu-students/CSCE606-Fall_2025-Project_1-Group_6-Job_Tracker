@@ -1,5 +1,8 @@
 require 'cucumber/rails'
+require 'simplecov'
+SimpleCov.start
 
+# Previous content of test helper now starts here
 ActionController::Base.allow_rescue = false
 
 begin
