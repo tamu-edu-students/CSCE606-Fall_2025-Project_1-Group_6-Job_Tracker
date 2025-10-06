@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Edit Profile (Devise)", type: :request do
-  let(:user) { create(:user, password: "Password@123") }
+  let(:user) { create(:user, password: "Password@123", password_confirmation: "Password@123") }
 
   before do
     sign_in user, scope: :user

@@ -12,7 +12,8 @@ class User < ApplicationRecord
 
   # Email must be present and valid format
   validates :email, presence: true,
-            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
+            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" },
+            uniqueness: { case_sensitive: false }
 
   # Password complexity validation
   validate :password_complexity

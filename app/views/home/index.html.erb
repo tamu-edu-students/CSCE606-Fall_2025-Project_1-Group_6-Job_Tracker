@@ -1,6 +1,18 @@
 <h1>Welcome to Job Tracker</h1>
 
-<p>
-  <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary" %>
-  <%= link_to "Log in", new_user_session_path, class: "btn btn-secondary" %>
-</p>
+<% if notice %>
+  <p class="notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert"><%= alert %></p>
+<% end %>
+
+<% if user_signed_in? %>
+  <p>Hello, <%= current_user.full_name %>!</p>
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+<% else %>
+  <p>
+    <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary" %>
+    <%= link_to "Log in", new_user_session_path, class: "btn btn-secondary" %>
+  </p>
+<% end %>

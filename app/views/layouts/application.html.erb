@@ -24,7 +24,10 @@
   </head>
 
   <body>
-    <nav class="navbar">
+  <% flash.each do |key, message| %>
+    <div class="flash-message <%= key %>"><%= message %></div>
+  <% end %>
+  <nav class="navbar">
       <%= link_to "Job Tracker", root_path, class: "navbar-brand" %>
       <div class="navbar-actions">
         <% if user_signed_in? %>

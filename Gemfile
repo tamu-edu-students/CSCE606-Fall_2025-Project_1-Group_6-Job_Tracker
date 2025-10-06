@@ -63,6 +63,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers", "~> 5.2"
+  gem "factory_bot_rails"
+  gem "shoulda-matchers"
+  gem "simplecov", require: false
+  gem "rails-controller-testing"
 end
 
 gem "jasmine-rails", "~> 0.15.0"

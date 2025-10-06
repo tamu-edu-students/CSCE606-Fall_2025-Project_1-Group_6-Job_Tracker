@@ -77,6 +77,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
-  # Also include TestLoginHelpers globally as a safety net
+    # Also include TestLoginHelpers globally as a safety net
+    config.include Rails::Controller::Testing::TemplateAssertions, type: :request
   config.include TestLoginHelpers
 end
