@@ -10,30 +10,42 @@ This Markdown document describes the **monolithic architecture** and flow of the
 ## 1. Overall Architecture
 
 ```
-+----------------------+        +----------------------+        +--------------------+
-|                      |        |                      |        |                    |
-|  Web Browser / UI    | <----> |  Rails Controllers   | <----> |  Views / Templating |
-|  (HTML/CSS/JS)       |        |  (Jobs, Users, Auth) |        |  ERB/Haml Templates |
-+----------------------+        +----------------------+        +--------------------+
-            |                               |
-            |                               |
-            v                               v
-+----------------------+        +----------------------+
-|                      |        |                      |
-| Models (ActiveRecord)|        |  Background Jobs     |
-|  User, Job, Reminder,|        |  (Notifications, CSV)|
-|    etc.              |        |                      |
-+----------------------+        +----------------------+
-            |
-            |
-            v
-+----------------------+        +----------------------+
-|                      |        |                      |
-|  Database (PostgreSQL)|       |  External Services   |
-|                      |        |  (Email/Slack API)  |
-+----------------------+        +----------------------+
++----------------------+     +----------------------+     +--------------------+
+|  Web Browser / UI    | <-> |  Rails Controllers   | <-> |  Views / Templating |
+|  (HTML/CSS/JS,       |     |  (Jobs, Users, Auth) |     |  (ERB/Haml, JS)     |
+|  Stimulus)           |     |                      |     |                    |
++----------------------+     +----------+-----------+     +--------------------+
+             |                          |
+             | HTTP requests / Fetch/XHR
+             v                          v
++----------------------+     +----------------------+
+| Frontend Assets / JS | --> | Rails Controllers    |
+| (Stimulus controllers,|     | (HTML endpoints,     |
+|  packs, CSS, images)  |     |  JSON/API endpoints) |
++----------------------+     +----------+-----------+
+             |                          |
+             | client-side DOM updates  | reads / writes
+             | or API calls to          v
+             | controllers         +----------------------+
+             +-------------------> | Models (ActiveRecord)|
+                                | User, Job, Company   |
+                                | Reminders, etc.      |
+                                +----------------------+ 
+                                         |
+                                         v
+                                +----------------------+
+                                |  Database            |
+                                |  (PostgreSQL)        |
+                                +----------------------+
+                                         |
+                                         v
+                                +----------------------+
+                                | Background Jobs      |
+                                | (ActiveJob — adapter)|
+                                | -> External Services |
+                                |    (Email, Slack API)|
+                                +----------------------+
 ```
-
 ---
 
 ## 2. Components
