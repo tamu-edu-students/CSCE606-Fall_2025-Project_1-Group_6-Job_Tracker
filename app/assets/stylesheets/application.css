@@ -373,6 +373,10 @@ body {
   background-color: #b83f4b;
 }
 
+.job-card.to-apply {
+  background-color: #A0AEC0;
+}
+
 .job-card a {
   color: white;
   font-weight: bold; /* Makes the link stand out a bit more */
@@ -404,6 +408,10 @@ body {
 
 .status-badge.rejected {
   background-color: #e23a4b;
+}
+
+.status-badge.to-apply {
+  background-color: #A0AEC0;
 }
 
 .table thead th a {

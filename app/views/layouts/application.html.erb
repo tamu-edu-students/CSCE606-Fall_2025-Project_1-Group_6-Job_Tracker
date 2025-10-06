@@ -24,18 +24,36 @@
   </head>
 
   <body>
-    <nav class="navbar">
-      <%= link_to "Job Tracker", dashboard_path, class: "navbar-brand" %>
-      <div class="navbar-actions">
-        <% if user_signed_in? %>
-          <%= button_to "Personal Info", personal_info_path, method: :get, class: "btn btn-primary" %>
-          <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-        <% else %>
-          <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
-          <%= link_to "Login", new_user_session_path, class: "btn btn-secondary" %>
-        <% end %>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+  <%= link_to "Job Tracker", dashboard_path, class: "navbar-brand fw-bold" %>
+
+  <div class="collapse navbar-collapse">
+    <% if user_signed_in? %>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to "Dashboard", dashboard_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Job List", jobs_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Reminders", reminders_path, class: "nav-link" %>
+        </li>
+      </ul>
+
+      <div class="d-flex">
+        <%= link_to "Personal Info", personal_info_path, class: "btn btn-outline-primary me-2" %>
+        <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
       </div>
-    </nav>
+    <% else %>
+      <div class="ms-auto">
+        <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary me-2" %>
+        <%= link_to "Login", new_user_session_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</nav>
+
 
     <%= yield %>
 
