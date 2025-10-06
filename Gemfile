@@ -88,3 +88,5 @@ end
 group :development do
   gem "letter_opener"
 end
+
+gem "solid_queue", "~> 1.2"
