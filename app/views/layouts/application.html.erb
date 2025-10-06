@@ -25,7 +25,7 @@
 
   <body>
     <nav class="navbar">
-      <%= link_to "Job Tracker", root_path, class: "navbar-brand" %>
+      <%= link_to "Job Tracker", dashboard_path, class: "navbar-brand" %>
       <div class="navbar-actions">
         <% if user_signed_in? %>
           <%= button_to "Personal Info", personal_info_path, method: :get, class: "btn btn-primary" %>

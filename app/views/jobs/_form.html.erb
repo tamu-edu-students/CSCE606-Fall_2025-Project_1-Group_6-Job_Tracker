@@ -39,6 +39,7 @@
         <div class="col-md-6 mb-3">
           <%= form.label :status, class: 'form-label fw-bold' %>
           <%= form.select :status, options_for_select([
+            ['To Apply', 'to_apply'],
             ['Applied', 'applied'],
             ['Interview', 'interview'],
             ['Rejected', 'rejected'],

@@ -90,7 +90,7 @@ Rails.application.configure do
   config.action_mailer.default_options = { from: "shmishra@tamu.edu" }
   config.action_mailer.smtp_settings = {
     user_name: "apikey",
-    password: Rails.application.credentials.dig(:sendgrid, :api_key),
+    password: ENV["SENDGRID_API_KEY"],
     domain: "tamu.edu",
     address: "smtp.sendgrid.net",
     port: 587,
