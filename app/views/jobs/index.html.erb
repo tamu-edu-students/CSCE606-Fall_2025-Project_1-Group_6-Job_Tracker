@@ -1,9 +1,39 @@
 <div class="container mt-4">
+
+    <% if notice %>
+      <div class="alert alert-success"><%= notice %></div>
+    <% elsif alert %>
+      <div class="alert alert-danger"><%= alert %></div>
+    <% end %>
+
+    
+
   <div class="d-flex justify-content-between align-items-center mt-4">
     <h1 class="page-title mb-0">My Job Applications</h1>
-    <%= link_to "New Job Application", new_job_path, class: "btn btn-outline-primary" %>
-  </div>
+    <div class="d-flex align-items-center">
+        <!-- Export Button -->
+        <%= link_to "New Job Application", new_job_path, class: "btn btn-outline-primary me-3 btn-sm" %>
+        <%= link_to "Export Jobs (CSV)", export_jobs_path, class: "btn btn-outline-primary me-3 btn-sm" %>
 
+        <!-- Import Form -->
+        <%= form_with url: import_jobs_path,
+                  method: :post,
+                  html: { multipart: true, data: { turbo: false }, class: "d-flex align-items-center" } do %>
+      <input type="file"
+             name="file"
+             accept=".csv"
+             class="form-control form-control-sm me-2"
+             required>
+      <%= submit_tag "Import Jobs", class: "btn btn-outline-primary btn-sm" %>
+    <% end %>
+      </div>
+    
+  </div>
+  <hr>
+  <small class="text-muted">
+      <em>Upload a CSV file (max 10 rows). Columns: title, company, link, deadline, status, notes.<br>
+      Companies not found will be created automatically.</em>
+    </small>
   <hr>
 
   <div class="mb-3 text-center">

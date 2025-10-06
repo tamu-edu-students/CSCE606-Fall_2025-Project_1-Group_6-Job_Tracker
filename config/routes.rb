@@ -13,9 +13,13 @@ Rails.application.routes.draw do
     member do
       patch :update_status
     end
-  end
 
-  resources :jobs
+    collection do
+      get  :export
+      post :import
+    end
+  end 
+
   resources :jobs, only: [ :index ]
   resources :companies, only: [ :index, :show, :new, :create ]
   resources :reminders, only: [ :index, :new, :create, :update, :destroy ]
