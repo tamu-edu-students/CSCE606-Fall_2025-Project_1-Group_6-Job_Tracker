@@ -81,3 +81,8 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker", group: [ :development, :test ]
 end
+
+group :test do
+  gem 'rails-controller-testing'
+end
+
