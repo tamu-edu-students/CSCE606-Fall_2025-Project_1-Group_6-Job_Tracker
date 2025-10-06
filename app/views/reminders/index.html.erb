@@ -1,0 +1,69 @@
+<div class="container my-4">
+    <h2 class="mb-3">Upcoming Reminders (Next 30 Days)</h2>
+
+    <div class="mb-3">
+    <%= link_to "New Reminder", new_reminder_path, class: "btn btn-primary" %>
+    </div>
+
+    <% if @reminders.any? %>
+    <table class="table table-striped align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>Job</th>
+            <th>Type</th>
+            <th>Reminder Time</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @reminders.each do |reminder| %>
+            <tr>
+            <td>
+                <% if reminder.job.present? %>
+                <%= link_to reminder.job.title, reminder.job, class: "text-decoration-none" %>
+                <% else %>
+                <em>Job deleted</em>
+                <% end %>
+            </td>
+            <td><%= reminder.reminder_type.capitalize %></td>
+            <td><%= reminder.reminder_time.strftime("%b %d, %Y %I:%M %p") %></td>
+            <td>
+                <% if reminder.disabled? %>
+                <span class="badge text-bg-danger">Disabled</span>
+                <% else %>
+                <span class="badge text-bg-success">Active</span>
+                <% end %>
+            </td>
+            <td class="text-end">
+                <% if reminder.disabled? %>
+                <%= button_to "Enable",
+                        reminder_path(reminder),
+                        method: :put,
+                        params: { reminder: { disabled: false } },
+                        class: "btn btn-success btn-sm" %>
+                <% else %>
+                <%= button_to "Disable",
+                        reminder_path(reminder),
+                        method: :put,
+                        params: { reminder: { disabled: true } },
+                        class: "btn btn-warning btn-sm" %>
+                <% end %>
+
+                <%= button_to "Delete",
+                    reminder_path(reminder),
+                    method: :delete,
+                    data: { confirm: "Are you sure you want to delete this reminder?" },
+                    class: "btn btn-outline-danger btn-sm ms-2" %>
+            </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    <% else %>
+    <div class="alert alert-info">No upcoming reminders found.</div>
+    <% end %>
+
+</div>
+
+

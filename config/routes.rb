@@ -9,8 +9,6 @@ Rails.application.routes.draw do
   get "my_jobs", to: "jobs#index", as: "my_jobs"
   get "home", to: "home#index"
 
-  resources :companies, only: [ :index, :show, :new, :create ]
-
   resources :jobs do
     member do
       patch :update_status
@@ -20,4 +18,5 @@ Rails.application.routes.draw do
   resources :jobs
   resources :jobs, only: [ :index ]
   resources :companies, only: [ :index, :show, :new, :create ]
+  resources :reminders, only: [ :index, :new, :create, :update, :destroy ]
 end

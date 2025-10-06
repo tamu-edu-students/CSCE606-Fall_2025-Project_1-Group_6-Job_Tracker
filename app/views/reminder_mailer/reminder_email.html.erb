@@ -1,0 +1,16 @@
+<h2>Hello <%= @user.email.split('@').first.capitalize %>,</h2>
+
+<p>You’ve set a reminder for your job application:</p>
+
+<ul>
+  <li><strong>Job:</strong> <%= @job.title %></li>
+  <li><strong>Company:</strong> <%= @job.company&.name %></li>
+  <li><strong>Type:</strong> <%= @reminder.reminder_type == "deadline" ? "Application Deadline" : "Interview" %></li>
+  <li><strong>Reminder Time:</strong> <%= @reminder.reminder_time.strftime("%b %d, %Y %I:%M %p") %></li>
+</ul>
+
+<p>
+  <%= link_to "View Job", job_url(@job), target: "_blank" %>
+</p>
+
+<p>— The Job Tracker Team</p>

@@ -21,6 +21,7 @@ class User < ApplicationRecord
   validate :passwords_match, if: -> { password.present? || password_confirmation.present? }
 
   has_many :jobs, dependent: :destroy
+  has_many :reminders, dependent: :destroy
 
   has_one_attached :profile_photo
   validate :acceptable_image
