@@ -10,29 +10,48 @@ This Markdown document describes the **monolithic architecture** and flow of the
 ## 1. Overall Architecture
 
 ```
-+----------------------+        +----------------------+        +--------------------+
-|                      |        |                      |        |                    |
-|  Web Browser / UI    | <----> |  Rails Controllers   | <----> |  Views / Templating |
-|  (HTML/CSS/JS)       |        |  (Jobs, Users, Auth) |        |  ERB/Haml Templates |
-+----------------------+        +----------------------+        +--------------------+
-            |                               |
-            |                               |
-            v                               v
-+----------------------+        +----------------------+
-|                      |        |                      |
-| Models (ActiveRecord)|        |  Background Jobs     |
-|  User, Job, Reminder,|        |  (Notifications, CSV)|
-|    etc.              |        |                      |
-+----------------------+        +----------------------+
-            |
-            |
-            v
-+----------------------+        +----------------------+
-|                      |        |                      |
-|  Database (PostgreSQL)|       |  External Services   |
-|                      |        |  (Email/Slack API)  |
-+----------------------+        +----------------------+
++----------------------+     +----------------------+     +--------------------+
+|  Web Browser / UI    | <-> |  Rails Controllers   | <-> |  Views / Templating |
+|  (HTML/CSS/JS,       |     |  (Jobs, Users, Auth) |     |  (ERB/Haml, JS)     |
+|  Stimulus)           |     |                      |     |                    |
++----------------------+     +----------+-----------+     +--------------------+
+             |                          |
+             | HTTP requests / Fetch/XHR
+             v                          v
++----------------------+     +----------------------+
+| Frontend Assets / JS | --> | Rails Controllers    |
+| (Stimulus controllers,|     | (HTML endpoints,     |
+|  packs, CSS, images)  |     |  JSON/API endpoints) |
++----------------------+     +----------+-----------+
+             |                          |
+             | client-side DOM updates  | reads / writes
+             | or API calls to          v
+             | controllers         +----------------------+
+             +-------------------> | Models (ActiveRecord)|
+                                | User, Job, Company   |
+                                | Reminders, etc.      |
+                                +----------------------+ 
+                                         |
+                                         v
+                                +----------------------+
+                                |  Database            |
+                                |  (PostgreSQL)        |
+                                +----------------------+
+                                         |
+                                         v
+                                +----------------------+
+                                | Background Jobs      |
+                                | (ActiveJob — adapter)|
+                                | -> External Services |
+                                |    (Email, Slack API)|
+                                +----------------------+
 ```
+
+Note: Controllers receive HTTP requests (or XHR/Fetch API calls from Stimulus/JS), coordinate with Models (ActiveRecord) to read/write data, and then render Views or return JSON. Models persist data to the database; Background Jobs operate outside the request cycle, also reading/writing models and calling external services (email, Slack). Frontend assets and Stimulus controllers primarily run in the browser — they update the DOM directly for instant UX and call controller endpoints when they need server-side data or to mutate model state.
+
+Repository-specific notes:
+- The `app/javascript/controllers/job_search_controller.js` file implements client-side filtering of the jobs table and prevents the search form from performing a full-page submit when JavaScript is enabled. It does not, by default, call a server-side search endpoint (though `JobsController#index` supports `params[:q]` as a non-JS fallback).
+- I checked for common background-job patterns (`perform_later`, `deliver_later`) and found no occurrences in the repo. `ApplicationJob` and `ApplicationMailer` exist so the app is ready for queued jobs, but there are no explicit enqueued jobs in the current codebase.
 
 ---
 
