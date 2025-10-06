@@ -112,7 +112,36 @@ Background Jobs handle async tasks (Notifications / CSV Import)
 
 ---
 
-## Jobs & Companies — Features and Tests
+## Edit Profile Functionality
+The Edit Profile feature allows users to update their personal information, ensuring that their profile remains current. Users can update details such as their full name, contact information, location, LinkedIn URL, resume URL, profile photo, email, and password.
+
+Users can edit the following fields:
+1. Full name
+2. Phone number
+3. Location
+4. LinkedIn URL
+5. Resume URL
+6. Profile photo
+7. Email
+8. Password
+
+All changes persist in the database immediately after submission.  Updated information is displayed on the profile page without delay. Password updates require the current password for confirmation.
+
+If email changes are made and the app uses Devise confirmable, pending reconfirmation is handled correctly.
+File uploads for the profile photo only accept JPEG and PNG formats.
+
+Validations are applied:
+1. Minimum password length (if changing password)
+2. Valid email format
+3. Optional URL format for LinkedIn and Resume URLs
+
+To do so, the following methodology has been used :
+1. Create profile edit form
+2. Render all editable fields in a form and display current values of each field.
+
+We use Devise's registration_path for updating the user. We ensure updates persist to the database.
+
+## Jobs & Companies 
 
 This project provides a small Job Tracker with the following user-facing features and routes (concise):
 
@@ -128,6 +157,67 @@ What lives where (important files):
 - Stimulus search controller: `app/javascript/controllers/job_search_controller.js` (client-side filtering of `#jobs-table`).
  - Stimulus search controller: `app/javascript/controllers/job_search_controller.js` (client-side filtering of `#jobs-table`). The Stimulus controller now prevents the GET form from performing a full-page submit when JavaScript is enabled (so JS clients get instant filtering while non-JS clients use the server-side `q` fallback).
 - Companies controller and views: `app/controllers/companies_controller.rb`, `app/views/companies/*`.
+
+## Dashboard – Job Overview
+
+The Dashboard feature provides users with a centralized view of all their job applications, organized by status categories: Applied, Interview, Offer, and Rejected. Each job is displayed in a card showing its title and associated company, giving users a clear snapshot of their application progress. Users can also navigate to their personal information or add new jobs directly from the dashboard. 
+
+The backend retrieves all jobs along with associated company details to ensure complete information is displayed. The interface uses Bootstrap for responsive layout and styling, creating a user-friendly experience. The DashboardController ensures that only authenticated users can access their dashboard and manages data retrieval efficiently. This setup allows real-time reflection of job data, providing users with an up-to-date overview.
+
+Key Points:
+1. Jobs are categorized and displayed based on status (Applied, Interview, Offer, Rejected).
+2. Each job card shows the job title and company name.
+3. Buttons allow quick access to personal info and adding new jobs.
+4. Backend uses Job.includes(:company).all to fetch jobs efficiently.
+5. Controller enforces user authentication and manages personalized job data.
+
+## Job List View 
+
+The Job List View feature provides users with a structured interface to efficiently manage all their job applications. Jobs are displayed in a table format, with each row representing a single job and showing key details including the title, associated company, status, and deadline. This organized layout enables users to quickly scan their applications and take necessary actions.
+
+From a backend perspective, the `@jobs` instance variable is populated in the controller, typically scoped to `current_user.jobs` to ensure that users only see their own applications. The table supports full CRUD integration: each job row includes **Edit** and **Delete** buttons. The **Edit** button navigates to the job edit form, allowing users to update details such as title, status, company, and deadline. The **Delete** button leverages Turbo Streams to send a `DELETE` request asynchronously and optionally displays a confirmation prompt before removal, improving user experience by avoiding full page reloads.
+
+The frontend is implemented using Bootstrap for responsive design and consistent styling. The table header clearly defines columns for easy scanning, and empty states are handled gracefully with a centered message prompting users to add new applications. 
+
+
+## Color-Coded Job Status Badges Documentation
+
+The Color-Coded Status feature enhances the dashboard and job listings by visually distinguishing job statuses, allowing users to quickly understand the progress of each application. Each status—Applied, Interview, Offer, and Rejected—is assigned a unique color and icon, displayed as a badge on job cards. 
+
+The JobsHelper#status_badge method generates the badges dynamically, mapping each status to a corresponding emoji and CSS class. Job cards also adopt status-specific background colors for additional visual cues. The design is flexible, so any new status added in the future can be easily integrated with a color and icon.
+
+Key Points:
+1. Statuses are visually distinguished with unique colors and icons:
+  <br>Applied → 📩 Blue
+  <br>Interview → 📞 Orange
+  <br>Offer → ✅ Green
+  <br>Rejected → ❎ Red
+2. Helper method status_badge generates dynamic badges based on job status.
+3. Job cards use status-specific background colors for clearer visual grouping.
+4. Styling uses CSS classes like .status-badge and .job-card for consistency.
+5. Supports easy extension for future statuses with minimal changes in helper and CSS.
+
+## Job Sorting
+
+The Job Sorting feature allows users to dynamically order their job applications by various attributes—Title, Company, Status, or Deadline—directly from the job listings table. This improves usability by enabling users to quickly locate specific jobs based on their preferred sorting criteria.
+
+The backend logic is handled in the JobsController#index action. Jobs are scoped to the current user and preloaded with associated company data using includes(:company) for efficient querying. Sorting parameters are captured from params[:sort] and params[:direction], with asc as the default direction. Depending on the selected column, the controller dynamically constructs the query using ActiveRecord order, and joins the companies table when sorting by company name. 
+
+The controller responds to both HTML and Turbo Stream requests, allowing for seamless asynchronous updates of the table without a full page reload.
+
+On the frontend, the _jobs_table.html.erb partial renders the job table. Each column header is a clickable link that triggers sorting via the jobs_path with the appropriate sort and direction parameters. The JobsHelper methods next_direction and sort_indicator manage the toggling of sort directions and display of visual indicators (↑ for ascending, ↓ for descending), ensuring intuitive UI feedback. 
+
+The table body is dynamically updated through Turbo Frames, targeting the jobs_table frame to reflect the new sort order immediately. Each row includes links to view, edit, or delete jobs, preserving standard CRUD functionality while maintaining responsive updates.
+
+Technical Highlights:
+- Backend query dynamically sorts by title, status, deadline, or company using ActiveRecord and optional joins.
+- Sorting direction toggles between ascending and descending based on current state, managed by JobsHelper#next_direction.
+- Visual indicators (↑/↓) show current sort state via JobsHelper#sort_indicator.
+- Turbo Frames (turbo_frame_tag "jobs_table") allow partial page updates when sorting, avoiding full page reloads.
+- Table gracefully handles empty state with a message prompting users to add new jobs.
+- This setup ensures that sorting is both efficient on the backend and responsive on the frontend, providing a seamless user experience for managing job applications.
+
+## Features and Tests
 
 Test coverage (what we ran locally)
 - RSpec (job-focused)
