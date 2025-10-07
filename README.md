@@ -77,7 +77,7 @@ Each ADR explains **what decision was made**, **why it was made**, **what altern
 | [ADR-006](docs/ADR-006-csv-import-export.md) | **CSV Import/Export for Jobs** | Implemented CSV import/export for user data portability. |
 | [ADR-007](docs/ADR-007-reminder-system.md) | **Reminder System Design** | Built a Reminder model tied to Jobs with status-based auto-disable logic. |
 | [ADR-008](docs/ADR-008-ci-pipeline.md) | **Continuous Integration Pipeline** | Configured GitHub Actions to run RSpec, Cucumber, and Brakeman on each PR. |
-| [ADR-009](docs/ADR-009-mailers.md) | **Mailers: SendGrid (Prod) + Letter Opener (Dev)** | Managed notifications using SendGrid in production and Letter Opener locally. |
+| [ADR-009](docs/ADR-009-mailers.md) | **Mailers: SendGrid (Prod) + Letter Opener (Dev)** | Managed notifications using SendGrid. |
 | [ADR-010](docs/ADR-010-frontend-choice.md) | **Frontend Implementation: ERB + Importmap** | Chose ERB templates and Importmap for a lightweight, build-free frontend. |
 
 ---
