@@ -12,7 +12,7 @@ end
 
 When('I click the {string} button') do |button_text|
   # Allow flexibility between "Export Jobs" and "Export Jobs (CSV)"
-  candidates = [button_text, button_text.gsub('(CSV)', '').strip]
+  candidates = [ button_text, button_text.gsub('(CSV)', '').strip ]
   found = candidates.find { |t| page.has_button?(t, wait: 1) || page.has_link?(t, wait: 1) }
 
   if found

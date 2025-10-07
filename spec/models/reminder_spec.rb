@@ -128,6 +128,3 @@ RSpec.describe Reminder, type: :model do
     end
   end
 end
-
-
-

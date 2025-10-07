@@ -26,7 +26,7 @@ class Job < ApplicationRecord
         Rails.logger.info "Skipping invalid reminder ##{reminder.id}: #{e.message}"
       end
     end
-  end 
+  end
 
 
   def deadline_not_too_far

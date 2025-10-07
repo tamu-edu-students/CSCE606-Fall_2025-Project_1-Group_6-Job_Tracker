@@ -6,7 +6,7 @@ RSpec.describe JobsCsvImporter, type: :service do
 
   def csv_of(rows)
     header = "title,company,link,deadline,status,notes\n"
-    header + rows.map { |r| [r[:title], r[:company], r[:link], r[:deadline], r[:status], r[:notes]].join(",") }.join("\n") + "\n"
+    header + rows.map { |r| [ r[:title], r[:company], r[:link], r[:deadline], r[:status], r[:notes] ].join(",") }.join("\n") + "\n"
   end
 
   it "imports up to MAX_ROWS rows for the current user and creates companies" do

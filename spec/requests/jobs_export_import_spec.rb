@@ -13,7 +13,7 @@ RSpec.describe "Jobs Import/Export (request)", type: :request do
   # Helper to simulate real CSV upload
   # -------------------------------------------------
   def upload_csv(content)
-    tmp = Tempfile.new(["jobs", ".csv"])
+    tmp = Tempfile.new([ "jobs", ".csv" ])
     tmp.write(content)
     tmp.rewind
     Rack::Test::UploadedFile.new(tmp.path, "text/csv")

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'capybara/rails'
 
 # --------------------------
@@ -18,13 +19,13 @@ end
 
 Given('I am on the {string} page') do |page_name|
   path = case page_name.downcase
-         when 'my job applications' then jobs_path
-         when 'new company' then new_company_path
-         when 'reminders' then reminders_path
-         when 'dashboard' then dashboard_path
-         else
+  when 'my job applications' then jobs_path
+  when 'new company' then new_company_path
+  when 'reminders' then reminders_path
+  when 'dashboard' then dashboard_path
+  else
            raise "Unknown page: #{page_name}"
-         end
+  end
   visit path
 end
 

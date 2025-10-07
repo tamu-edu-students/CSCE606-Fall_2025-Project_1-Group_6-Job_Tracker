@@ -16,7 +16,7 @@ RSpec.describe Job, type: :model do
   end
 
   it "rejects deadlines beyond 2035-12-31" do
-    j = build(:job, user: user, company: company, deadline: Date.new(2036,1,1))
+    j = build(:job, user: user, company: company, deadline: Date.new(2036, 1, 1))
     expect(j).not_to be_valid
     expect(j.errors[:deadline].join).to match(/on or before 2035-12-31/)
   end

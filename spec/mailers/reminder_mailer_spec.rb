@@ -9,7 +9,7 @@ RSpec.describe ReminderMailer, type: :mailer do
   it "sets subject for deadline reminders" do
     reminder = create(:reminder, user: user, job: job, reminder_type: "deadline", reminder_time: 1.day.from_now)
     mail = described_class.reminder_email(reminder)
-    expect(mail.to).to eq(["user@example.com"])
+    expect(mail.to).to eq([ "user@example.com" ])
     expect(mail.subject).to match(/Application Deadline/i)
   end
 
