@@ -46,6 +46,40 @@ This Markdown document describes the **monolithic architecture** and flow of the
                                 |    (Email, Slack API)|
                                 +----------------------+
 ```
+### 🧭 Architecture Decision Records (ADRs)
+
+**Project:** Job Tracker  
+**Course:** CSCE 606 – Software Engineering  
+**Institution:** Texas A&M University  
+**Team:** Group 6 (Fall 2025)  
+
+---
+
+#### 📘 Overview
+
+Architecture Decision Records (ADRs) capture **important architectural and technical decisions** made throughout the lifecycle of the Job Tracker application.
+
+Each ADR explains **what decision was made**, **why it was made**, **what alternatives were considered**, and **its consequences**.
+
+> ADRs are numbered sequentially and stored under `/docs/architecture/`.
+
+---
+
+## 📂 ADR Index
+
+| ADR # | Title | Summary |
+|-------|--------|----------|
+| [ADR-001](docs/ADR-001-monolithic-architecture.md) | **Monolithic Rails 8 Architecture** | Adopted a single Rails monolith for simplicity and Heroku compatibility. |
+| [ADR-002](docs/ADR-002-authentication-devise.md) | **Authentication with Devise** | Chose Devise for secure, full-featured authentication and password recovery. |
+| [ADR-003](docs/ADR-003-database-choice.md) | **Database Choice: PostgreSQL (Prod) + SQLite (Dev/Test)** | Used SQLite locally and PostgreSQL in production for compatibility and ease. |
+| [ADR-004](docs/ADR-004-deployment-heroku.md) | **Deployment via Heroku with GitHub Actions CI/CD** | Selected Heroku for seamless Git-based deployment and CI/CD automation. |
+| [ADR-005](docs/ADR-005-testing-frameworks.md) | **Testing Frameworks: RSpec + Cucumber** | Combined RSpec for unit/integration tests and Cucumber for acceptance testing. |
+| [ADR-006](docs/ADR-006-csv-import-export.md) | **CSV Import/Export for Jobs** | Implemented CSV import/export for user data portability. |
+| [ADR-007](docs/ADR-007-reminder-system.md) | **Reminder System Design** | Built a Reminder model tied to Jobs with status-based auto-disable logic. |
+| [ADR-008](docs/ADR-008-ci-pipeline.md) | **Continuous Integration Pipeline** | Configured GitHub Actions to run RSpec, Cucumber, and Brakeman on each PR. |
+| [ADR-009](docs/ADR-009-mailers.md) | **Mailers: SendGrid (Prod) + Letter Opener (Dev)** | Managed notifications using SendGrid. |
+| [ADR-010](docs/ADR-010-frontend-choice.md) | **Frontend Implementation: ERB + Importmap** | Chose ERB templates and Importmap for a lightweight, build-free frontend. |
+
 
 ## Class Diagram
 
@@ -445,12 +479,10 @@ Follow these steps to get the application running on your local machine.
     git clone https://github.com/your-username/job-tracker.git](https://github.com/your-username/job-tracker.git
     cd job-tracker
     ```
-
 2.  **Install Dependencies**
     ```bash
     bundle install
     ```
-
 3.  **Set Up the Database**
     ```bash
     # Create the database, run migrations, and prepare the test database
@@ -458,42 +490,29 @@ Follow these steps to get the application running on your local machine.
     rails db:migrate
     rails db:seed
     ```
-
 ***
-
 ### 3️⃣ Running the Application Locally
-
 1.  **Start the Server**
     ```bash
     rails s
     ```
     This command starts the Puma server and the CSS builders.
-
 2.  **Access the App**
     Open your browser and navigate to **`http://localhost:3000`**.
-
 ***
-
 ### 4️⃣ Running the Test Suite
-
 This project uses RSpec for model/request testing and Cucumber for feature testing.
-
 * **Run RSpec Tests:**
     ```bash
     bundle exec rspec
     ```
-
 * **Run Cucumber Feature Tests:**
     ```bash
     bundle exec cucumber
     ```
-
 ***
-
 ### 5️⃣ Deployment with Heroku & GitHub Actions (CI/CD)
-
 Follow these steps to set up automated deployments to Heroku whenever you merge to the `main` branch.
-
 1.  **Log in to Heroku and Create the App**
     ```bash
     # Log in via the command line
@@ -502,13 +521,11 @@ Follow these steps to set up automated deployments to Heroku whenever you merge 
     # Create a unique name for your application
     heroku create your-job-tracker-app-name
     ```
-
 2.  **Provision the PostgreSQL Database**
     Heroku uses PostgreSQL, which is specified in the `Gemfile` for the production environment.
     ```bash
     heroku addons:create heroku-postgresql:hobby-dev --app your-job-tracker-app-name
     ```
-
 3.  **Initial Deployment & Database Migration**
     The first time you deploy, you must manually run the database migrations. The CI/CD workflow will handle this for subsequent deployments.
     ```bash
@@ -521,15 +538,13 @@ Follow these steps to set up automated deployments to Heroku whenever you merge 
 
     # This command sends your local `main` branch to the Heroku remote repository. Heroku detects the push, builds your application, and deploys it to its servers.
     git push heroku main
-    
+
     # This is a convenient Heroku CLI shortcut that opens your deployed application's URL in your default web browser.
     heroku open
     ```
     
 ## Debug Pointers 🐛
-
 This section provides useful context for developers trying to debug issues in the codebase—including common dead ends to avoid and fixes that have worked in the past.
-
 | Issue / Area | Tried Solutions (Dead Ends)                                                                                                                                                   | Final Working Fix / Recommendation |
 | :--- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :--- |
 | **Heroku deployment successful, but CSS are missing** | After a deploy, the site appeared unstyled with 404 errors for assets in the browser console. Restarting dynos with `heroku restart` and redeploying did not solve the issue. | The Heroku build process failed during the `assets:precompile` step, but the deploy was still marked as successful. **Fix:** Check the build log for asset compilation errors. The issue was resolved by manually running `heroku run rails assets:precompile` to see the error, fixing it, and then redeploying. **Recommendation:** Always check the full deployment build log on Heroku, not just the final "deployed" message. |
