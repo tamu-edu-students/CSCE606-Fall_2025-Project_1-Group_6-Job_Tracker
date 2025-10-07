@@ -89,4 +89,6 @@ group :development do
   gem "letter_opener"
 end
 
+gem "simplecov", require: false, group: :test
+
 gem "solid_queue", "~> 1.2"

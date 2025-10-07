@@ -1,25 +1,33 @@
-require 'rails_helper'
+# spec/models/company_spec.rb
+require "rails_helper"
 
 RSpec.describe Company, type: :model do
-  it 'is invalid without a name' do
-    company = Company.new(name: nil, website: 'https://example.com')
-    expect(company).not_to be_valid
-    expect(company.errors[:name]).to include("can't be blank")
+  it "is invalid without a name" do
+    c = Company.new(name: nil, website: nil)
+    expect(c).not_to be_valid
+    expect(c.errors[:name]).to include("can't be blank")
   end
 
-  it 'is invalid with an improperly formatted website' do
-    company = Company.new(name: 'BadURL', website: 'not_a_url')
-    expect(company).not_to be_valid
-    expect(company.errors[:website]).to include("must be a valid URL starting with http:// or https://")
+  it "enforces case-insensitive uniqueness on name" do
+    Company.create!(name: "System Co", website: nil)
+    dup = Company.new(name: "system co", website: nil)
+    expect(dup).not_to be_valid
+    expect(dup.errors[:name].join).to match(/has already been taken/i)
   end
 
-  it 'is valid when website is blank' do
-    company = Company.new(name: 'BlankWeb', website: '')
-    expect(company).to be_valid
+  it "allows blank website" do
+    c = Company.new(name: "Blank Web", website: "")
+    expect(c).to be_valid
   end
 
-  it 'is valid with a properly formatted website' do
-    company = Company.new(name: 'GoodURL', website: 'https://example.com')
-    expect(company).to be_valid
+  it "requires a valid website format if present (http/https)" do
+    c = Company.new(name: "Bad URL Co", website: "ftp://example.com")
+    expect(c).not_to be_valid
+    expect(c.errors[:website].join).to match(/must be a valid URL/i)
+  end
+
+  it "normalizes name with strip + titleize" do
+    c = Company.create!(name: "  systemCo  ", website: nil)
+    expect(c.reload.name).to eq("System Co")
   end
 end

@@ -1,6 +1,9 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'factory_bot_rails'
 require 'spec_helper'
+require 'simplecov'
+SimpleCov.start
+# Previous content of test helper now starts here
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -46,6 +49,8 @@ RSpec.configure do |config|
     Rails.root.join('spec/fixtures')
   ]
 
+
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -79,4 +84,5 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
   # Also include TestLoginHelpers globally as a safety net
   config.include TestLoginHelpers
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end

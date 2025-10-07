@@ -27,7 +27,7 @@ class Reminder < ApplicationRecord
   # CALLBACKS
   # -------------------
   after_create_commit :send_creation_email
-  before_save :auto_disable_based_on_job_status
+  before_validation :auto_disable_based_on_job_status  # ✅ moved earlier
 
   # -------------------
   # INSTANCE METHODS
@@ -38,19 +38,16 @@ class Reminder < ApplicationRecord
 
   private
 
-  # ✅ Reminder's job must belong to same user
   def job_belongs_to_user
     return if job.nil?
     errors.add(:job_id, "must belong to the same user as the reminder") if job.user_id != user_id
   end
 
-  # ✅ Cannot schedule reminders in the past
   def reminder_not_in_past
     return if reminder_time.blank?
     errors.add(:reminder_time, "cannot be set in the past") if reminder_time < Time.zone.now
   end
 
-  # ✅ Interview reminder must be after deadline reminder
   def interview_after_deadline
     return unless reminder_type == "interview"
     return if reminder_time.blank?
@@ -66,7 +63,6 @@ class Reminder < ApplicationRecord
     end
   end
 
-  # ✅ Only one deadline reminder per job per user
   def single_deadline_per_job
     return unless reminder_type == "deadline"
 
@@ -82,10 +78,8 @@ class Reminder < ApplicationRecord
 
     case reminder_type
     when "deadline"
-      # Disable if job not in 'to_apply'
       self.disabled = true unless job.status == "to_apply"
     when "interview"
-      # Disable if job in 'offer' or 'rejected'
       self.disabled = true if %w[offer rejected].include?(job.status)
     end
   end
@@ -105,7 +99,6 @@ class Reminder < ApplicationRecord
     end
   end
 
-  # ✅ Send email asynchronously
   def send_creation_email
     ReminderMailer.reminder_email(self).deliver_later
   end
