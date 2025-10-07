@@ -290,11 +290,9 @@ Technical Highlights:
 - User behavior: the search performs real-time, client-side filtering of the visible jobs table as you type. It matches job title and company name (case-insensitive, partial matches supported). Results update instantly without reloading the page.
 
 - Notes for developers:
-  - The client-side search is implemented with a Stimulus controller at `app/javascript/controllers/job_search_controller.js` (importmap-style). It filters table rows in the browser for small-to-moderate datasets.
   - A server-side search endpoint also exists (`GET /jobs/search` -> `JobsController#search`) as a possible fallback for large datasets or when you need pagination/search on the server. If you enable server-side search, prefer `left_joins(:company)` or equivalent to avoid errors when jobs have no associated company.
     - Server-side fallback: there is no separate `#search` action — instead `JobsController#index` accepts `params[:q]` (GET /jobs?q=...) and performs the server-side filtering. If you later add server-side paging or heavy full-text search, consider using a dedicated search service (Postgres full-text, ElasticSearch, or Algolia).
 
-- Quick user tip: visit the Dashboard, start typing in the search box (top-right of the jobs table) and watch the rows filter live. There is no delay and no network traffic for the filtering itself.
 
 ## 3. Tests
 
@@ -328,6 +326,7 @@ This is a summary of the test suite coverage.
   * `features/dashboard_navigation.feature` — Verifies opening a job from the jobs list and that "Back" returns to the jobs list.
   * `features/search.feature` — Verifies the search input is present on the jobs list and that a non-JS form submission filters results.
   * `features/company_from_job.feature` — Verifies the create-company-from-job flow and return-to-job behavior.
+
 Brief acceptance criteria (concise bullets)
 - Job create: POST /jobs with valid params creates a Job record and redirects (see route-level redirect behaviour). Invalid params (blank title, blank company, malformed deadline) return 422 and show errors.
 - Job update: PATCH /jobs/:id with valid params updates the record; when `from: 'dashboard'` or referer is dashboard, redirect to dashboard, otherwise to jobs list.
@@ -353,12 +352,64 @@ bundle exec cucumber --format pretty
 bundle exec rspec spec/requests/jobs_crud_spec.rb
 ```
 
-Notes and suggested additional tests (small list)
-- Add authorization tests ensuring users cannot access or modify other users' jobs (request specs). This is high-priority for data safety.
-- Add `update_status` request specs to validate permitted enum values and behavior.
-- Add deadline boundary tests (e.g., '2035-12-31' accepted) and status enum negative tests.
+## User Guide
+* Getting Started
+  * On the home page, users can Sign Up for a new account or Log In if they already have one.
+  * Signing up requires basic information — Name, Email, Phone Number, and Password.
+  * Once registered, you can log in anytime with your credentials.
 
-If you'd like, I can add the high-priority missing specs now (ownership + update_status + user_id tamper protection) and run the suite.
+
+* Dashboard Overview
+  * After logging in, you are redirected to your Dashboard — the central hub of the application.
+  * The dashboard displays all your saved jobs categorized by status (e.g., “To Apply,” “Applied,” “Interview,” “Offer,” etc.).
+  * Each job card shows essential details such as Title, Company, Deadline, and Status.
+  * If you’ve saved a Google Software Developer job but haven’t applied yet, it appears under “To Apply”.
+
+* Adding a Job
+  * Click on the “Add Job” button.
+  * Fill in details like Job Title, Company Name, Deadline, and Status.
+  * The form also includes preloaded company names for convenience, but you can add a new one as needed. To add a new company, there is a form in which you have to add the name of the company and the company site. 
+  * Once submitted, the new job will appear in your dashboard and job list.
+
+* Managing Your Jobs
+  * Access the “My Jobs List” page for a list view of all saved jobs.
+  * Features include:
+    - Search by company name or title
+    - Sort jobs by status, date, name of company
+    - Edit job details (opens the edit form for updates) 
+    - Delete unwanted job entries
+
+  * Any changes made here are automatically reflected on the Dashboard.
+
+* Updating Job Status
+  * You can update the status of any job using a drop-down menu (e.g., changing from “Applied” to “Interview”).
+  * This helps keep your dashboard up-to-date with your real progress.
+
+* Import / Export Feature
+  * The Import/Export option lets you:
+    - Import jobs from a CSV file to quickly populate your dashboard.
+    - Export all your job applications into a CSV for backup or sharing.
+
+  * The CSV has to be of a certain format : It can have at max 10 rows. Columns required are title, company, link, deadline, status, notes. Companies not found will be created automatically.
+
+* Reminders
+
+  * The Reminders tab displays jobs with upcoming deadlines.
+
+  * Here you can:
+    - Add a new reminder for any job by selecting date and time.
+    - Disable or Delete reminders when they’re no longer needed.
+
+  * This ensures you never miss an important deadline.
+
+* Managing Your Profile
+  * The Personal Info section displays your profile details. Click Edit to update fields such as Contact details, Profile photo, Relevant URLs (LinkedIn, Portfolio, etc.)
+
+* Logging Out
+  * Use the Logout button to securely end your session.
+
+## Important Links
+Deployed URL - https://job-tracker-g6-ea96d4f297d7.herokuapp.com/
 
 
 ------------------------------------------------------------------------------------------
