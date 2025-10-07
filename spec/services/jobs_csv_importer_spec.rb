@@ -1,56 +1,82 @@
+# spec/services/jobs_csv_importer_spec.rb
 require "rails_helper"
 
-RSpec.describe JobsCsvImporter do
+RSpec.describe JobsCsvImporter, type: :service do
   let(:user) { create(:user) }
 
-  def load_fixture(name)
-    File.read(Rails.root.join("spec/fixtures/files/#{name}"))
+  def csv_of(rows)
+    header = "title,company,link,deadline,status,notes\n"
+    header + rows.map { |r| [r[:title], r[:company], r[:link], r[:deadline], r[:status], r[:notes]].join(",") }.join("\n") + "\n"
   end
 
-  it "imports a valid CSV" do
-    csv = load_fixture("valid_jobs.csv")
+  it "imports up to MAX_ROWS rows for the current user and creates companies" do
+    csv = csv_of([
+      { title: "Eng 1", company: "Acme", link: "https://ac.me/j1", deadline: "2025-10-10", status: "to_apply", notes: "n1" },
+      { title: "Eng 2", company: "Acme", link: "https://ac.me/j2", deadline: "2025-10-11", status: "applied",  notes: "n2" },
+      { title: "PM 1",  company: "Globex", link: "https://glx.me/j3", deadline: "2025-10-12", status: "interview", notes: "n3" }
+    ])
+
     expect {
       described_class.new(user).import!(csv)
-    }.to change { Job.where(user: user).count }.by(1)
-    expect(Company.where("LOWER(name)=?", "google")).to exist
+    }.to change { Job.where(user: user).count }.by(3)
+     .and change { Company.count }.by(2)
+
+    titles = user.jobs.order(:created_at).pluck(:title)
+    expect(titles).to include("Eng 1", "Eng 2", "PM 1")
   end
 
-  it "raises on invalid header" do
-    csv = load_fixture("invalid_header.csv")
+  it "raises on missing headers" do
+    bad_csv = "title,company,link,deadline,status\nWrong header row\n"
+    expect {
+      described_class.new(user).import!(bad_csv)
+    }.to raise_error(JobsCsvImporter::ImportError, /CSV headers must be exactly: title, company, link, deadline, status, notes/)
+  end
+
+  it "raises on extra headers" do
+    bad_csv = "title,company,link,deadline,status,notes,extra\nRow\n"
+    expect {
+      described_class.new(user).import!(bad_csv)
+    }.to raise_error(JobsCsvImporter::ImportError,  /CSV headers must be exactly: title, company, link, deadline, status, notes/)
+  end
+
+  it "rolls back when more than MAX_ROWS" do
+    rows = (1..(JobsCsvImporter::MAX_ROWS + 1)).map do |i|
+      { title: "T#{i}", company: "C#{i}", link: "https://x/#{i}", deadline: "2025-10-10", status: "to_apply", notes: "n" }
+    end
+    csv = csv_of(rows)
+
     expect {
       described_class.new(user).import!(csv)
-    }.to raise_error(JobsCsvImporter::ImportError, /headers/i)
+    }.to raise_error(JobsCsvImporter::ImportError, /maximum allowed is #{JobsCsvImporter::MAX_ROWS}/i)
+    expect(Job.where(user: user).count).to eq(0)
   end
 
-  it "raises when more than 10 rows" do
-    csv = load_fixture("too_many_jobs.csv")
-    expect {
-      described_class.new(user).import!(csv)
-    }.to raise_error(JobsCsvImporter::ImportError, /maximum allowed is 10/i)
-  end
-
-  it "raises on invalid status" do
-    csv = load_fixture("invalid_status.csv")
-    expect {
-      described_class.new(user).import!(csv)
-    }.to raise_error(JobsCsvImporter::ImportError, /status must be one of/i)
-  end
-
-  it "raises on malformed date" do
-    csv = load_fixture("invalid_date.csv")
-    expect {
-      described_class.new(user).import!(csv)
-    }.to raise_error(JobsCsvImporter::ImportError, /deadline must be an ISO date/i)
-  end
-
-  it "raises on duplicate job (all rolled back)" do
-    # seed an existing job
-    company = Company.create!(name: "ExportCo")
-    Job.create!(user: user, company: company, title: "Export Engineer", status: "applied")
-
-    csv = load_fixture("duplicate_job.csv")
+  it "raises on duplicate job for same user (title + company)" do
+    csv = csv_of([
+      { title: "Dup", company: "Acme", link: "https://ac.me/j1", deadline: "2025-10-10", status: "to_apply", notes: "" },
+      { title: "Dup", company: "Acme", link: "https://ac.me/j2", deadline: "2025-10-11", status: "applied",  notes: "" }
+    ])
     expect {
       described_class.new(user).import!(csv)
     }.to raise_error(JobsCsvImporter::ImportError, /Duplicate job detected/)
+    expect(Job.where(user: user).count).to eq(0) # rolled back
+  end
+
+  it "raises on invalid status" do
+    csv = csv_of([
+      { title: "Eng", company: "Acme", link: "https://ac.me/j1", deadline: "2025-10-10", status: "open", notes: "" }
+    ])
+    expect {
+      described_class.new(user).import!(csv)
+    }.to raise_error(JobsCsvImporter::ImportError, /status must be one of to_apply, applied, interview, offer, rejected/)
+  end
+
+  it "raises on invalid date format" do
+    csv = csv_of([
+      { title: "Eng", company: "Acme", link: "https://ac.me/j1", deadline: "10/10/2025", status: "applied", notes: "" }
+    ])
+    expect {
+      described_class.new(user).import!(csv)
+    }.to raise_error(JobsCsvImporter::ImportError, /deadline must be an ISO date/)
   end
 end

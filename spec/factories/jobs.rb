@@ -5,7 +5,7 @@ FactoryBot.define do
     link { "https://jobs.example.com/position/123" }
     deadline { 1.month.from_now.to_date }
     notes { "Applied via referral. Follow up in two weeks." }
-    status { "applied" }
+    status { "to_apply" }
     association :user
   end
 end
