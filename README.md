@@ -411,6 +411,9 @@ bundle exec rspec spec/requests/jobs_crud_spec.rb
 ## Important Links
 Deployed URL - https://job-tracker-g6-ea96d4f297d7.herokuapp.com/
 
+Slack Invite Link - https://join.slack.com/t/csce606fall20-5co5793/shared_invite/zt-3d9oqc184-Jd2kHnvZ4Z7GLJzc6XWcRw
+
+Scrum Events Documentation - https://github.com/tamu-edu-students/CSCE606-Fall_2025-Project_1-Group_6-Job_Tracker/tree/main/docs
 
 ------------------------------------------------------------------------------------------
 
