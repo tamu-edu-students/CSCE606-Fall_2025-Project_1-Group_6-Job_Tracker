@@ -6,7 +6,7 @@
 The system must support password reset and reminder notifications.
 
 ## Decision
-Use **SendGrid** for production emails and **Letter Opener** for local preview.
+Use **SendGrid** for emails.
 
 ## Alternatives Considered
 - Custom SMTP setup  
@@ -16,7 +16,6 @@ Use **SendGrid** for production emails and **Letter Opener** for local preview.
 ## Rationale
 - SendGrid offers a free Heroku add-on.  
 - Devise integrates easily with Action Mailer.  
-- Letter Opener allows local testing without sending real emails.
 
 ## Consequences
 - External dependency for production mail delivery.  
