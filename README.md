@@ -416,26 +416,121 @@ Slack Invite Link - https://join.slack.com/t/csce606fall20-5co5793/shared_invite
 Scrum Events Documentation - https://github.com/tamu-edu-students/CSCE606-Fall_2025-Project_1-Group_6-Job_Tracker/tree/main/docs
 
 ------------------------------------------------------------------------------------------
+## From Local Setup to Live Deployment 🚀
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This guide provides everything you need to take the Job Tracker application from a fresh clone to a fully deployed application on Heroku.
 
-Things you may want to cover:
+***
 
-* Ruby version
+### 1️⃣ Prerequisites
 
-* System dependencies
+First, ensure you have the necessary tools installed on your system.
 
-* Configuration
+| Tool | Version | Installation Command / Link |
+| :--- | :--- | :--- |
+| **Ruby** | `3.3.4` | `rbenv install 3.3.4` (or use your preferred version manager) |
+| **Bundler** | `2.4+` | `gem install bundler` |
+| **SQLite3** | `3.x` | `brew install sqlite3` (macOS) or `sudo apt-get install sqlite3` (Debian/Ubuntu) |
+| **Git** | `2.x` | `brew install git` (macOS) or `sudo apt-get install git` (Debian/Ubuntu) |
+| **Heroku CLI** | Latest | [Official Installation Guide](https://devcenter.heroku.com/articles/heroku-cli) |
 
-* Database creation
+***
 
-* Database initialization
+### 2️⃣ Local Installation
 
-* How to run the test suite
+Follow these steps to get the application running on your local machine.
 
-* Services (job queues, cache servers, search engines, etc.)
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/your-username/job-tracker.git](https://github.com/your-username/job-tracker.git
+    cd job-tracker
+    ```
 
-* Deployment instructions
+2.  **Install Dependencies**
+    ```bash
+    bundle install
+    ```
 
-* ...
+3.  **Set Up the Database**
+    ```bash
+    # Create the database, run migrations, and prepare the test database
+    rails db:create
+    rails db:migrate
+    rails db:seed
+    ```
+
+***
+
+### 3️⃣ Running the Application Locally
+
+1.  **Start the Server**
+    ```bash
+    rails s
+    ```
+    This command starts the Puma server and the CSS builders.
+
+2.  **Access the App**
+    Open your browser and navigate to **`http://localhost:3000`**.
+
+***
+
+### 4️⃣ Running the Test Suite
+
+This project uses RSpec for model/request testing and Cucumber for feature testing.
+
+* **Run RSpec Tests:**
+    ```bash
+    bundle exec rspec
+    ```
+
+* **Run Cucumber Feature Tests:**
+    ```bash
+    bundle exec cucumber
+    ```
+
+***
+
+### 5️⃣ Deployment with Heroku & GitHub Actions (CI/CD)
+
+Follow these steps to set up automated deployments to Heroku whenever you merge to the `main` branch.
+
+1.  **Log in to Heroku and Create the App**
+    ```bash
+    # Log in via the command line
+    heroku login
+
+    # Create a unique name for your application
+    heroku create your-job-tracker-app-name
+    ```
+
+2.  **Provision the PostgreSQL Database**
+    Heroku uses PostgreSQL, which is specified in the `Gemfile` for the production environment.
+    ```bash
+    heroku addons:create heroku-postgresql:hobby-dev --app your-job-tracker-app-name
+    ```
+
+3.  **Initial Deployment & Database Migration**
+    The first time you deploy, you must manually run the database migrations. The CI/CD workflow will handle this for subsequent deployments.
+    ```bash
+    # Push your code to trigger the first build via GitHub Actions
+    git push origin main
+
+    # Once the build is complete, run the migration
+    heroku run rails db:migrate --app your-job-tracker-app-name
+    heroku run rails db:seed --app your-job-tracker-app-name
+
+    # This command sends your local `main` branch to the Heroku remote repository. Heroku detects the push, builds your application, and deploys it to its servers.
+    git push heroku main
+    
+    # This is a convenient Heroku CLI shortcut that opens your deployed application's URL in your default web browser.
+    heroku open
+    ```
+    
+## Debug Pointers 🐛
+
+This section provides useful context for developers trying to debug issues in the codebase—including common dead ends to avoid and fixes that have worked in the past.
+
+| Issue / Area | Tried Solutions (Dead Ends)                                                                                                                                                   | Final Working Fix / Recommendation |
+| :--- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :--- |
+| **Heroku deployment successful, but CSS are missing** | After a deploy, the site appeared unstyled with 404 errors for assets in the browser console. Restarting dynos with `heroku restart` and redeploying did not solve the issue. | The Heroku build process failed during the `assets:precompile` step, but the deploy was still marked as successful. **Fix:** Check the build log for asset compilation errors. The issue was resolved by manually running `heroku run rails assets:precompile` to see the error, fixing it, and then redeploying. **Recommendation:** Always check the full deployment build log on Heroku, not just the final "deployed" message. |
+| **Database queries work locally (SQLite) but fail in production (PostgreSQL)** | A feature using a complex query worked perfectly in development but crashed the app on Heroku with a `PG::UndefinedFunction` error.                                           | SQLite and PostgreSQL have slightly different SQL syntax. **Recommendation:** Set up your local development environment to use PostgreSQL to match production and catch these errors early. |
