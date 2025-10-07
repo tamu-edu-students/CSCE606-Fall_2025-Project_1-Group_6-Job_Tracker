@@ -1,3 +1,5 @@
+require "csv"
+
 class JobsController < ApplicationController
   # Require authentication and always scope job operations to the signed-in user.
   before_action :authenticate_user!
@@ -45,9 +47,9 @@ class JobsController < ApplicationController
   end
 
   def new
-  @job = current_user.jobs.new
-  @companies = Company.all
-end
+    @job = current_user.jobs.new
+    @companies = Company.all
+  end
 
   def create
     # Build job associated with the signed-in user only.
@@ -81,9 +83,9 @@ end
   end
 
   def edit
-  @job = current_user.jobs.find(params[:id])
-  @companies = Company.all
-end
+    @job = current_user.jobs.find(params[:id])
+    @companies = Company.all
+  end
 
 
   def update
@@ -128,6 +130,52 @@ end
       redirect_to jobs_path, notice: "Status updated successfully."
     else
       redirect_to jobs_path, alert: "Failed to update status."
+    end
+  end
+
+  # GET /jobs/export
+  # Exports ONLY the current_user's jobs as CSV with company name
+  def export
+    jobs = current_user.jobs.includes(:company).order(:created_at)
+
+    csv = CSV.generate(headers: true) do |out|
+      out << %w[title company link deadline status notes]
+      jobs.find_each do |job|
+        out << [
+          job.title,
+          job.company&.name,
+          job.link,
+          job.deadline&.to_s, # ISO date
+          job.status,
+          job.notes
+        ]
+      end
+    end
+
+    send_data csv,
+      filename: "jobs-#{Time.zone.now.strftime('%Y%m%d-%H%M%S')}.csv",
+      type: "text/csv"
+  end
+
+  # POST /jobs/import
+  # Transactional import: max 10 rows; creates company by name; creates NEW jobs only.
+  def import
+    file = params[:file]
+    if file.blank?
+      redirect_to jobs_path, alert: "Please choose a CSV file to import." and return
+    end
+
+    # Read the whole thing into memory; uploaded file is temp and will be cleaned up by Rack
+    content = file.read
+    if content.blank?
+      redirect_to jobs_path, alert: "The uploaded file is empty." and return
+    end
+
+    begin
+      JobsCsvImporter.new(current_user).import!(content)
+      redirect_to jobs_path, notice: "Jobs imported successfully."
+    rescue JobsCsvImporter::ImportError => e
+      redirect_to jobs_path, alert: "Import failed: #{e.message}"
     end
   end
 

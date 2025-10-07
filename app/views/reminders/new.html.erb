@@ -1,0 +1,52 @@
+<div class="container pt-3 pb-2" style="max-width: 800px;">
+  <h1 class="page-title mb-0">New Reminder</h1>
+  <div class="form-panel p-3 p-md-4">
+    <%= form_with model: @reminder, local: true do |f| %>
+    <%# If a job_id param is present, it means user came from a job page %>
+    <% if params[:job_id].present? %>
+        <div class="mb-3">
+        <%= f.label :job_id, "Job", class: "form-label" %>
+        <% selected_job = current_user.jobs.find_by(id: params[:job_id]) %>
+        <% if selected_job %>
+            <%= text_field_tag :job_title, selected_job.title, class: "form-control", disabled: true %>
+            <%= f.hidden_field :job_id, value: selected_job.id %>
+        <% else %>
+            <div class="alert alert-warning">
+            Selected job not found or not accessible.
+            </div>
+        <% end %>
+        </div>
+    <% else %>
+        <div class="mb-3">
+        <%= f.label :job_id, "Select Job", class: "form-label" %>
+        <%= f.collection_select :job_id, current_user.jobs, :id, :title,
+                { prompt: "Choose a job" },
+                { class: "form-select" } %>
+        </div>
+    <% end %>
+
+    <div class="mb-3">
+        <%= f.label :reminder_type, "Reminder Type", class: "form-label" %>
+        <%= f.select :reminder_type,
+            [["Deadline", "deadline"], ["Interview", "interview"]],
+            { prompt: "Select type" },
+            { class: "form-select" } %>
+    </div>
+
+    <div class="mb-3">
+        <%= f.label :reminder_time, "Reminder Time", class: "form-label" %>
+        <%= f.datetime_field :reminder_time, class: "form-control" %>
+    </div>
+
+    <div class="form-check mb-3">
+        <%= f.check_box :disabled, class: "form-check-input", id: "rem_disabled" %>
+        <%= f.label :disabled, "Disabled", class: "form-check-label" %>
+    </div>
+
+    <div>
+        <%= f.submit "Create Reminder", class: "btn btn-primary" %>
+        <%= link_to "Cancel", reminders_path, class: "btn btn-secondary ms-2" %>
+    </div>
+    <% end %>
+  </div>  
+</div>
