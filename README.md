@@ -46,6 +46,40 @@ This Markdown document describes the **monolithic architecture** and flow of the
                                 |    (Email, Slack API)|
                                 +----------------------+
 ```
+### 🧭 Architecture Decision Records (ADRs)
+
+**Project:** Job Tracker  
+**Course:** CSCE 606 – Software Engineering  
+**Institution:** Texas A&M University  
+**Team:** Group 6 (Fall 2025)  
+
+---
+
+#### 📘 Overview
+
+Architecture Decision Records (ADRs) capture **important architectural and technical decisions** made throughout the lifecycle of the Job Tracker application.
+
+Each ADR explains **what decision was made**, **why it was made**, **what alternatives were considered**, and **its consequences**.
+
+> ADRs are numbered sequentially and stored under `/docs/architecture/`.
+
+---
+
+## 📂 ADR Index
+
+| ADR # | Title | Summary |
+|-------|--------|----------|
+| [ADR-001](docs/ADR-001-monolithic-architecture.md) | **Monolithic Rails 8 Architecture** | Adopted a single Rails monolith for simplicity and Heroku compatibility. |
+| [ADR-002](docs/ADR-002-authentication-devise.md) | **Authentication with Devise** | Chose Devise for secure, full-featured authentication and password recovery. |
+| [ADR-003](docs/ADR-003-database-choice.md) | **Database Choice: PostgreSQL (Prod) + SQLite (Dev/Test)** | Used SQLite locally and PostgreSQL in production for compatibility and ease. |
+| [ADR-004](docs/ADR-004-deployment-heroku.md) | **Deployment via Heroku with GitHub Actions CI/CD** | Selected Heroku for seamless Git-based deployment and CI/CD automation. |
+| [ADR-005](docs/ADR-005-testing-frameworks.md) | **Testing Frameworks: RSpec + Cucumber** | Combined RSpec for unit/integration tests and Cucumber for acceptance testing. |
+| [ADR-006](docs/ADR-006-csv-import-export.md) | **CSV Import/Export for Jobs** | Implemented CSV import/export for user data portability. |
+| [ADR-007](docs/ADR-007-reminder-system.md) | **Reminder System Design** | Built a Reminder model tied to Jobs with status-based auto-disable logic. |
+| [ADR-008](docs/ADR-008-ci-pipeline.md) | **Continuous Integration Pipeline** | Configured GitHub Actions to run RSpec, Cucumber, and Brakeman on each PR. |
+| [ADR-009](docs/ADR-009-mailers.md) | **Mailers: SendGrid (Prod) + Letter Opener (Dev)** | Managed notifications using SendGrid in production and Letter Opener locally. |
+| [ADR-010](docs/ADR-010-frontend-choice.md) | **Frontend Implementation: ERB + Importmap** | Chose ERB templates and Importmap for a lightweight, build-free frontend. |
+
 ---
 
 ## 2. Components
@@ -301,27 +335,3 @@ If you'd like, I can add the high-priority missing specs now (ownership + update
 
 - Quick user tip: visit the Dashboard, start typing in the search box (top-right of the jobs table) and watch the rows filter live. There is no delay and no network traffic for the filtering itself.
 
-------------------------------------------------------------------------------------------
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
